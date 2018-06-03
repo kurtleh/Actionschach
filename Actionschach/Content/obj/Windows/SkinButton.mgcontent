@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/StartButton.png</SourceFile>
-  <SourceTime>2018-05-28T09:19:33.2586265+02:00</SourceTime>
-  <DestFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/bin/Windows/StartButton.xnb</DestFile>
-  <DestTime>2018-05-28T10:17:38.4270839+02:00</DestTime>
+  <SourceFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/SkinButton.png</SourceFile>
+  <SourceTime>2018-06-03T17:57:31.9761958+02:00</SourceTime>
+  <DestFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/bin/Windows/SkinButton.xnb</DestFile>
+  <DestTime>2018-06-03T17:58:39.3578216+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
