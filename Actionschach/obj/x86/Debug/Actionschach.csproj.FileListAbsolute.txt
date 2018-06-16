@@ -26,3 +26,4 @@ C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\ob
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\StartButton.xnb
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\Cursor.xnb
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\SkinButton.xnb
+C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\coin.xnb

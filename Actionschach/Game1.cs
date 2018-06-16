@@ -26,6 +26,18 @@ namespace Actionschach
         Texture2D skinButton;
         ButtonState lastmousestate;
 
+        //Camera
+        Vector3 camTarget;
+        Vector3 camPosition;
+        Matrix projectionMatrix;
+        Matrix viewMatrix;
+        Matrix worldMatrix;
+
+        Model model;
+
+        //Orbit
+        bool orbit = false;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,12 +57,19 @@ namespace Actionschach
 
            
             base.Initialize();
-            position = new Vector2(graphics.GraphicsDevice.Viewport.
-                      Width / 2,
-                                   graphics.GraphicsDevice.Viewport.
-                                   Height / 2);
 
-        }
+            //Setup Camera
+            camTarget = new Vector3(0f, 0f, 0f);
+            camPosition = new Vector3(0f, 0f, -100f);
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                               MathHelper.ToRadians(45f),
+                               GraphicsDevice.DisplayMode.AspectRatio,1f, 1000f);
+            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
+                         new Vector3(0f, 1f, 0f));// Y up
+            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.
+                          Forward, Vector3.Up);
+            model = Content.Load<Model>("coin");
+    }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -89,20 +108,19 @@ namespace Actionschach
             MouseState state = Mouse.GetState();
             position.X = state.X;
             position.Y = state.Y;
-            if (state.RightButton == ButtonState.Pressed)
-                Exit();
+            
 
             // TODO: Add your update logic here
-           
+            
             base.Update(gameTime);
             switch (_state)
             {
                 case GameState.MainMenu:
                     UpdateMainMenu(gameTime);
                     break;
-              /*  case GameState.Gameplay:
+                case GameState.Gameplay:
                     UpdateGameplay(gameTime);
-                    break;*/
+                    break;
                 case GameState.Skinmenu:
                     UpdateSkinMenu(gameTime);
                     break;
@@ -125,7 +143,7 @@ namespace Actionschach
             if (position.X < 450  &&
         position.X > 300 &&
         position.Y < 150 &&
-        position.Y > 50)
+        position.Y > 50 && state.LeftButton == ButtonState.Pressed && lastmousestate == ButtonState.Released)
             {
                 return true;
             }
@@ -140,7 +158,7 @@ namespace Actionschach
             if (position.X < 450 &&
         position.X > 300 &&
         position.Y < 150 &&
-        position.Y > 50 && state.LeftButton==ButtonState.Pressed && lastmousestate==ButtonState.Released)
+        position.Y > 200 && state.LeftButton==ButtonState.Pressed && lastmousestate==ButtonState.Released)
             {
                 return true;
             }
@@ -168,17 +186,39 @@ namespace Actionschach
              // Respond to user input for menu selections, etc
              if (pressedSkinbutton())
                  _state = GameState.Skinmenu;
+            if (pressedStartbutton())
+                _state = GameState.Gameplay;
          }
-        /*
+        
          void UpdateGameplay(GameTime deltaTime)
          {
-             // Respond to user actions in the game.
-             // Update enemies
-             // Handle collisions
-             if (pushedSkinButton)
-                 _state = GameState.Skinmenu;
+             if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                camPosition.X -= 1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                camPosition.X += 1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                camPosition.Y -= 1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                camPosition.Y += 1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.OemPlus))
+            {
+                camPosition.Z += 1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.OemMinus))
+            {
+                camPosition.Z -= 1f;
+            }
+            
          }
-         */
+         
          void UpdateSkinMenu(GameTime deltaTime)
          {
              // Update scores
@@ -196,41 +236,51 @@ namespace Actionschach
         {
             GraphicsDevice.Clear(Color.White);
 
-        // TODO: Add your drawing code here
-        
+            // TODO: Add your drawing code here
+            
 
-        base.Draw(gameTime);
+            base.Draw(gameTime);
             switch (_state)
             {
                 case GameState.MainMenu:
                     DrawMainMenu(gameTime);
                     break;
-               // case GameState.Gameplay:
-               //     DrawGameplay(gameTime);
-               //     break;
+                case GameState.Gameplay:
+                    DrawGameplay(gameTime);
+                    break;
                 case GameState.Skinmenu:
                     DrawSkinMenu(gameTime);
                     break;
             }
+
+
         }
 
          void DrawMainMenu(GameTime deltaTime)
         {
             spriteBatch.Begin();
-
             spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
+            spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 200, 150, 100));
             spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
 
-     /*   void DrawGameplay(GameTime deltaTime)
+       void DrawGameplay(GameTime deltaTime)
         {
-            // Draw the background the level
-            // Draw enemies
-            // Draw the player
-            // Draw particle effects, etc
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    //effect.EnableDefaultLighting();
+                    effect.AmbientLightColor = new Vector3(1f, 0, 0);
+                    effect.View = viewMatrix;
+                    effect.World = worldMatrix;
+                    effect.Projection = projectionMatrix;
+                }
+                mesh.Draw();
+            }
         }
-        */
+        
         void DrawSkinMenu(GameTime deltaTime)
         {
             spriteBatch.Begin();
