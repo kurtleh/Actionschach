@@ -29,11 +29,14 @@ namespace Actionschach
         //Camera
         Vector3 camTarget;
         Vector3 camPosition;
+        Vector3 figurPos;
         Matrix projectionMatrix;
         Matrix viewMatrix;
         Matrix worldMatrix;
+        Matrix figurMatrix;
 
-        Model model;
+        Model schachbrett;
+        Model figur;
 
         //Orbit
         bool orbit = false;
@@ -61,14 +64,16 @@ namespace Actionschach
             //Setup Camera
             camTarget = new Vector3(0f, 0f, 0f);
             camPosition = new Vector3(0f, 0f, -100f);
+            figurPos = new Vector3(1f, 0f, 0f);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                                MathHelper.ToRadians(45f),
                                GraphicsDevice.DisplayMode.AspectRatio,1f, 1000f);
             viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
                          new Vector3(0f, 1f, 0f));// Y up
-            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.
-                          Forward, Vector3.Up);
-            model = Content.Load<Model>("coin");
+            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
+            schachbrett = Content.Load<Model>("schachbrett");
+            figur = Content.Load<Model>("coin");
     }
 
         /// <summary>
@@ -125,7 +130,7 @@ namespace Actionschach
                     UpdateSkinMenu(gameTime);
                     break;
             }
-            if (state.LeftButton == ButtonState.Pressed)
+            if (state.LeftButton == ButtonState.Pressed)    //für klicks
             {
                 lastmousestate = ButtonState.Pressed;
             }
@@ -216,8 +221,20 @@ namespace Actionschach
             {
                 camPosition.Z -= 1f;
             }
-            
-         }
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                camPosition.X = 0;
+                camPosition.Y = 0;
+                camPosition.Z = -10f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                figurPos.X -= 1f;
+            }
+            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
+            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
+                         Vector3.Up);
+        }
          
          void UpdateSkinMenu(GameTime deltaTime)
          {
@@ -240,6 +257,7 @@ namespace Actionschach
             
 
             base.Draw(gameTime);
+            
             switch (_state)
             {
                 case GameState.MainMenu:
@@ -252,7 +270,9 @@ namespace Actionschach
                     DrawSkinMenu(gameTime);
                     break;
             }
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
+            spriteBatch.End();
 
         }
 
@@ -261,13 +281,13 @@ namespace Actionschach
             spriteBatch.Begin();
             spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 200, 150, 100));
-            spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
+            //spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
 
        void DrawGameplay(GameTime deltaTime)
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in schachbrett.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -279,13 +299,25 @@ namespace Actionschach
                 }
                 mesh.Draw();
             }
+            foreach (ModelMesh mesh in figur.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    //effect.EnableDefaultLighting();
+                    effect.AmbientLightColor = new Vector3(1f, 0, 0);
+                    effect.View = viewMatrix;
+                    effect.World = figurMatrix;
+                    effect.Projection = projectionMatrix;
+                }
+                mesh.Draw();
+            }
         }
         
         void DrawSkinMenu(GameTime deltaTime)
         {
             spriteBatch.Begin();
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
-            spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
+            //spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
     }
