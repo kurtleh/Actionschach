@@ -3,11 +3,11 @@
   <SourceFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/StartButton.png</SourceFile>
   <SourceTime>2018-06-16T16:50:43.0322567+02:00</SourceTime>
   <DestFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/bin/Windows/StartButton.xnb</DestFile>
-  <DestTime>2018-06-16T16:54:19.1825389+02:00</DestTime>
+  <DestTime>2018-06-25T13:37:52.1352546+02:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
+  <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2017-03-01T16:05:36+01:00</ProcessorTime>
+  <ProcessorTime>2016-03-30T08:36:08+02:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

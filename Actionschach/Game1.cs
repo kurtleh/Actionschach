@@ -30,16 +30,15 @@ namespace Actionschach
         Vector3 camTarget;
         Vector3 camPosition;
         Vector3 figurPos;
-        Matrix projectionMatrix;
-        Matrix viewMatrix;
+        public Matrix projectionMatrix;
+        public Matrix viewMatrix;
         Matrix worldMatrix;
         Matrix figurMatrix;
 
-        Model schachbrett;
-        Model figur;
+        Schachfigur test;
+        public Model schachbrett;
+        public Model figur;
 
-        //Orbit
-        bool orbit = false;
 
         public Game1()
         {
@@ -60,20 +59,9 @@ namespace Actionschach
 
            
             base.Initialize();
+            test = new Schachfigur(new Vector3(5f, 0f, 0f));
 
-            //Setup Camera
-            camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(0f, 0f, -100f);
-            figurPos = new Vector3(1f, 0f, 0f);
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                               MathHelper.ToRadians(45f),
-                               GraphicsDevice.DisplayMode.AspectRatio,1f, 1000f);
-            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
-                         new Vector3(0f, 1f, 0f));// Y up
-            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
-            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
-            schachbrett = Content.Load<Model>("schachbrett");
-            figur = Content.Load<Model>("coin");
+
     }
 
         /// <summary>
@@ -88,6 +76,18 @@ namespace Actionschach
             skinButton = this.Content.Load<Texture2D>("SkinButton");
             cursor = this.Content.Load<Texture2D>("Cursor");
             _state = GameState.MainMenu;
+            camTarget = new Vector3(0f, 0f, 0f);
+            camPosition = new Vector3(0f, 0f, -100f);
+            figurPos = new Vector3(1f, 0f, 0f);
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                               MathHelper.ToRadians(45f),
+                               GraphicsDevice.DisplayMode.AspectRatio,1f, 1000f);
+            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
+                         new Vector3(0f, 1f, 0f));// Y up
+            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
+            schachbrett = Content.Load<Model>("schachbrett");
+            figur = Content.Load<Model>("coin");
             // TODO: use this.Content to load your game content here
         }
 
@@ -197,6 +197,10 @@ namespace Actionschach
         
          void UpdateGameplay(GameTime deltaTime)
          {
+            if (Keyboard.GetState().IsKeyDown(Keys.T))
+            {
+                test.move(new Vector3(-5f, 3f, 0f));
+            }
              if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 camPosition.X -= 1f;
@@ -231,6 +235,7 @@ namespace Actionschach
             {
                 figurPos.X -= 1f;
             }
+            test.update(deltaTime);
             figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
             viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
                          Vector3.Up);
@@ -311,6 +316,18 @@ namespace Actionschach
                 }
                 mesh.Draw();
             }
+            foreach (ModelMesh mesh in figur.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    //effect.EnableDefaultLighting();
+                    effect.AmbientLightColor = new Vector3(1f, 0, 0);
+                    effect.View = viewMatrix;
+                    effect.World = test.getPosition();
+                    effect.Projection = projectionMatrix;
+                }
+                mesh.Draw();
+            }
         }
         
         void DrawSkinMenu(GameTime deltaTime)
@@ -319,6 +336,73 @@ namespace Actionschach
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
             //spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
+        }
+        public class Schachfigur
+        {
+            public Schachfigur(Vector3 pos)
+            {
+                position = pos;
+                moving = false;
+                destiny = pos;
+            }
+
+            public Matrix getPosition()
+            {
+                return Matrix.CreateWorld(this.position, Vector3.Forward, Vector3.Up);
+            }
+
+            public void move(Vector3 ziel)
+            {
+                destiny = ziel;
+                moving = true;
+            }
+
+            public void update(GameTime deltatime)
+            {
+                if (moving)
+                {
+                    if (position == destiny)
+                    {
+                        moving = false;
+                    }
+                    else
+                    {
+                        Vector3 direction = Vector3.Normalize(destiny - position);
+                        if ((destiny - position).Length() > destiny.Length())
+                        {
+                            position = position + direction;
+                        }
+                        else
+                        {
+                            position = destiny;
+                        }
+                    }
+                }
+            }
+
+        /*    public void draw(GameTime DeltaTime)
+            {
+                foreach (ModelMesh mesh in figur.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        //effect.EnableDefaultLighting();
+                        effect.AmbientLightColor = new Vector3(1f, 0, 0);
+                        effect.View = Game1.viewMatrix;
+                        effect.World = figurMatrix;
+                        effect.Projection = projectionMatrix;
+                    }
+                    mesh.Draw();
+                }
+            }*/
+
+
+            private Vector3 position;
+            private Vector3 destiny;
+            private bool moving;
+
+
+
         }
     }
 }
