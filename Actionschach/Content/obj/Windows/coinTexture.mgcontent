@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/coinTexture.png</SourceFile>
-  <SourceTime>2018-06-26T12:24:34.2376839+02:00</SourceTime>
+  <SourceTime>2018-06-29T08:55:12.6143591+02:00</SourceTime>
   <DestFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/bin/Windows/coinTexture.xnb</DestFile>
-  <DestTime>2018-06-26T12:32:24.7796307+02:00</DestTime>
+  <DestTime>2018-06-29T08:58:39.7750474+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T08:36:08+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

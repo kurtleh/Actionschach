@@ -29,6 +29,7 @@ namespace Actionschach
         //Camera
         Vector3 camTarget;
         Vector3 camPosition;
+
         Vector3 figurPos;
         public Matrix projectionMatrix;
         public Matrix viewMatrix;
@@ -77,7 +78,7 @@ namespace Actionschach
             cursor = this.Content.Load<Texture2D>("Cursor");
             _state = GameState.MainMenu;
             camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(0f, 0f, -100f);
+            camPosition = new Vector3(0f, -5f, -100f);
             figurPos = new Vector3(1f, 0f, 0f);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                                MathHelper.ToRadians(45f),
@@ -203,19 +204,26 @@ namespace Actionschach
             }
              if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                camPosition.X -= 1f;
+                camPosition = Vector3.Normalize(camPosition + Vector3.Normalize(Vector3.Cross(new Vector3(0, 0, 2), camPosition))) * camPosition.Length();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                camPosition.X += 1f;
+                camPosition = Vector3.Normalize(camPosition - Vector3.Normalize(Vector3.Cross(new Vector3(0,0,2),camPosition))) * camPosition.Length();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                camPosition.Y -= 1f;
+                if (camPosition.X == 0 && camPosition.Y == 0)
+                {
+                    camPosition = Vector3.Normalize(camPosition - (new Vector3(0, 0, 2))) * camPosition.Length();
+                }
+                else
+                {
+                    camPosition = Vector3.Normalize(camPosition - (new Vector3(0, 0, 2))) * camPosition.Length();
+                }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                camPosition.Y += 1f;
+               camPosition = Vector3.Normalize(camPosition + (new Vector3(0, 0, 2))) * camPosition.Length();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.OemPlus))
             {
@@ -225,17 +233,23 @@ namespace Actionschach
             {
                 camPosition += Vector3.Normalize(camPosition);
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))    //Standard Kameraposition
             {
                 camPosition.X = 0;
-                camPosition.Y = 0;
+                camPosition.Y = -5f;
                 camPosition.Z = -100f;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 figurPos.X -= 1f;
             }
-            test.update(deltaTime);
+            if (camPosition.Z > -3f)          //Grenze fürs Ranzoomen
+            {
+                float t = camPosition.Length();
+                camPosition.Z = -3f;
+                camPosition = Vector3.Normalize(camPosition) * t;
+            }
+            test.update(deltaTime);          //Aktualisierung der Positionen
             figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
             viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
                          Vector3.Up);
@@ -243,9 +257,7 @@ namespace Actionschach
          
          void UpdateSkinMenu(GameTime deltaTime)
          {
-             // Update scores
-             // Do any animations, effects, etc for getting a high score
-             // Respond to user input to restart level, or go back to main menu
+
              if (pressedMenubutton())
                  _state = GameState.MainMenu;
          }
@@ -286,7 +298,6 @@ namespace Actionschach
             spriteBatch.Begin();
             spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 200, 150, 100));
-            //spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
 
@@ -334,7 +345,6 @@ namespace Actionschach
         {
             spriteBatch.Begin();
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
-            //spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
         public class Schachfigur

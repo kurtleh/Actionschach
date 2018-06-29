@@ -18,7 +18,6 @@ C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bi
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XInput.xml
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csprojResolveAssemblyReference.cache
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csproj.CoreCompileInputs.cache
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csproj.CopyComplete
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.exe
@@ -31,3 +30,4 @@ C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bi
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.RawInput.dll
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.RawInput.xml
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\Cointexture.xnb
+C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csprojAssemblyReference.cache
