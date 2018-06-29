@@ -30,3 +30,4 @@ C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bi
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\coin.xnb
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.RawInput.dll
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.RawInput.xml
+C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\Cointexture.xnb

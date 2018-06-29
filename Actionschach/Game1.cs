@@ -162,7 +162,7 @@ namespace Actionschach
             position.Y = state.Y;
             if (position.X < 450 &&
         position.X > 300 &&
-        position.Y < 150 &&
+        position.Y < 350 &&
         position.Y > 200 && state.LeftButton==ButtonState.Pressed && lastmousestate==ButtonState.Released)
             {
                 return true;
@@ -219,17 +219,17 @@ namespace Actionschach
             }
             if (Keyboard.GetState().IsKeyDown(Keys.OemPlus))
             {
-                camPosition.Z += 1f;
+                camPosition -= Vector3.Normalize(camPosition);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.OemMinus))
             {
-                camPosition.Z -= 1f;
+                camPosition += Vector3.Normalize(camPosition);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 camPosition.X = 0;
                 camPosition.Y = 0;
-                camPosition.Z = -10f;
+                camPosition.Z = -100f;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
