@@ -39,11 +39,14 @@ namespace Actionschach
         Schachfigur test;
         public Model schachbrett;
         public Model figur;
-
+        Schachfigur[] w=new Schachfigur[8]; //weiße Figuren
+        Schachfigur[] b = new Schachfigur[8]; //schwarze Figuren
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this){
+                PreferredBackBufferWidth=1024,
+                PreferredBackBufferHeight=720 };
             Content.RootDirectory = "Content";
             
         }
@@ -57,10 +60,26 @@ namespace Actionschach
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-           
+            _state = GameState.MainMenu;
+            camTarget = new Vector3(0f, 0f, 0f);
+            camPosition = new Vector3(0f, -5f, -100f);
+            figurPos = new Vector3(1f, 0f, 0f);
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                               MathHelper.ToRadians(45f),
+                               GraphicsDevice.DisplayMode.AspectRatio,1f, 1000f);
+            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
+                         new Vector3(0f, 1f, 0f));
+            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
+              // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             base.Initialize();
-            test = new Schachfigur(new Vector3(5f, 0f, 0f));
+            float j = -14;
+            for (int i = 0; i < 8; i++)
+            {
+                w[i] = new Schachfigur(new Vector3(10f, j, 0f), figur);
+                j += 4;
+            }
 
 
     }
@@ -71,24 +90,13 @@ namespace Actionschach
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+         
             startButton = this.Content.Load<Texture2D>("StartButton");
             skinButton = this.Content.Load<Texture2D>("SkinButton");
             cursor = this.Content.Load<Texture2D>("Cursor");
-            _state = GameState.MainMenu;
-            camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(0f, -5f, -100f);
-            figurPos = new Vector3(1f, 0f, 0f);
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                               MathHelper.ToRadians(45f),
-                               GraphicsDevice.DisplayMode.AspectRatio,1f, 1000f);
-            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
-                         new Vector3(0f, 1f, 0f));// Y up
-            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
-            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
+            
             schachbrett = Content.Load<Model>("schachbrett");
-            figur = Content.Load<Model>("coin");
+            figur = Content.Load<Model>("coin2");
             // TODO: use this.Content to load your game content here
         }
 
@@ -249,7 +257,9 @@ namespace Actionschach
                 camPosition.Z = -3f;
                 camPosition = Vector3.Normalize(camPosition) * t;
             }
-            test.update(deltaTime);          //Aktualisierung der Positionen
+            for (int i = 0; i < 8; i++){
+                w[i].update(deltaTime);
+            }
             figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
             viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
                          Vector3.Up);
@@ -327,17 +337,9 @@ namespace Actionschach
                 }
                 mesh.Draw();
             }
-            foreach (ModelMesh mesh in figur.Meshes)
+            for(int i = 0; i < 8; i++)
             {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    //effect.EnableDefaultLighting();
-                    effect.AmbientLightColor = new Vector3(1f, 0, 0);
-                    effect.View = viewMatrix;
-                    effect.World = test.getPosition();
-                    effect.Projection = projectionMatrix;
-                }
-                mesh.Draw();
+                w[i].draw(deltaTime, viewMatrix, projectionMatrix);
             }
         }
         
@@ -349,11 +351,13 @@ namespace Actionschach
         }
         public class Schachfigur
         {
-            public Schachfigur(Vector3 pos)
+            public Schachfigur(Vector3 pos,Model mod)
             {
                 position = pos;
                 moving = false;
                 destiny = pos;
+                alive = true;
+                m = mod;
             }
 
             public Matrix getPosition()
@@ -390,27 +394,28 @@ namespace Actionschach
                 }
             }
 
-        /*    public void draw(GameTime DeltaTime)
+            public void draw(GameTime DeltaTime,Matrix viewMatrix,Matrix projectionMatrix)
             {
-                foreach (ModelMesh mesh in figur.Meshes)
+                foreach (ModelMesh mesh in this.m.Meshes)
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
                         //effect.EnableDefaultLighting();
                         effect.AmbientLightColor = new Vector3(1f, 0, 0);
-                        effect.View = Game1.viewMatrix;
-                        effect.World = figurMatrix;
+                        effect.View = viewMatrix;
+                        effect.World = Matrix.CreateWorld(position, Vector3.Forward, Vector3.Up);
                         effect.Projection = projectionMatrix;
                     }
                     mesh.Draw();
                 }
-            }*/
+            }
 
 
             private Vector3 position;
             private Vector3 destiny;
             private bool moving;
-
+            Model m;
+            bool alive;
 
 
         }
