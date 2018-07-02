@@ -78,6 +78,7 @@ namespace Actionschach
             for (int i = 0; i < 8; i++)
             {
                 w[i] = new Schachfigur(new Vector3(10f, j, 0f), figur);
+                b[i] = new Schachfigur(new Vector3(-10f, j, 0f), schachbrett);
                 j += 4;
             }
 
@@ -157,7 +158,7 @@ namespace Actionschach
             if (position.X < 450  &&
         position.X > 300 &&
         position.Y < 150 &&
-        position.Y > 50 && state.LeftButton == ButtonState.Pressed && lastmousestate == ButtonState.Released)
+        position.Y > 50 && click())
             {
                 return true;
             }
@@ -172,7 +173,7 @@ namespace Actionschach
             if (position.X < 450 &&
         position.X > 300 &&
         position.Y < 350 &&
-        position.Y > 200 && state.LeftButton==ButtonState.Pressed && lastmousestate==ButtonState.Released)
+        position.Y > 200 && click())
             {
                 return true;
             }
@@ -187,11 +188,17 @@ namespace Actionschach
             if (position.X < 450 &&
         position.X > 300 &&
         position.Y < 150 &&
-        position.Y > 50 && state.LeftButton == ButtonState.Pressed && lastmousestate == ButtonState.Released)
+        position.Y > 50 && click())
             {
                 return true;
             }
             return false;
+        }
+
+        public bool click()
+        {
+            MouseState state = Mouse.GetState();
+            return (state.LeftButton == ButtonState.Pressed && lastmousestate == ButtonState.Released);
         }
 
 
@@ -206,11 +213,7 @@ namespace Actionschach
         
          void UpdateGameplay(GameTime deltaTime)
          {
-            if (Keyboard.GetState().IsKeyDown(Keys.T))
-            {
-                test.move(new Vector3(-5f, 3f, 0f));
-            }
-             if (Keyboard.GetState().IsKeyDown(Keys.Left))
+             if (Keyboard.GetState().IsKeyDown(Keys.Left))  //Kamera
             {
                 camPosition = Vector3.Normalize(camPosition + Vector3.Normalize(Vector3.Cross(new Vector3(0, 0, 2), camPosition))) * camPosition.Length();
             }
@@ -247,9 +250,13 @@ namespace Actionschach
                 camPosition.Y = -5f;
                 camPosition.Z = -100f;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(Keys.D))  //Test
             {
-                figurPos.X -= 1f;
+                figurPos.Y -= 1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.T))
+            {
+                figurPos.X += 0f;
             }
             if (camPosition.Z > -3f)          //Grenze fürs Ranzoomen
             {
@@ -259,6 +266,7 @@ namespace Actionschach
             }
             for (int i = 0; i < 8; i++){
                 w[i].update(deltaTime);
+                b[i].update(deltaTime);
             }
             figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
             viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
@@ -337,9 +345,10 @@ namespace Actionschach
                 }
                 mesh.Draw();
             }
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 w[i].draw(deltaTime, viewMatrix, projectionMatrix);
+                b[i].draw(deltaTime, viewMatrix, projectionMatrix);
             }
         }
         
@@ -349,6 +358,31 @@ namespace Actionschach
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
             spriteBatch.End();
         }
+
+        public Vector3 GetVector(Vector2 mausp)
+        {
+            int schritt = 4;// Breite der Feldér
+            int x=400;
+            int y=216;
+            int zeile = 0;
+            int spalte = 0;
+            while (mausp.X > x)
+            {
+                spalte++;
+                x += (schritt * 7);
+            }
+            while (mausp.Y > y)
+            {
+                zeile++;
+                y += (schritt * 9);
+            }
+            return new Vector3((spalte-4)*schritt, (zeile - 4) * schritt,0);
+        }
+
+
+
+
+
         public class Schachfigur
         {
             public Schachfigur(Vector3 pos,Model mod)
