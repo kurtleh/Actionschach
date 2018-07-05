@@ -32,3 +32,5 @@ C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bi
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\Cointexture.xnb
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csprojAssemblyReference.cache
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\coin2.xnb
+C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\coinb.xnb
+C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\coinw.xnb

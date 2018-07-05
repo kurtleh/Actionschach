@@ -31,14 +31,17 @@ namespace Actionschach
         Vector3 camPosition;
 
         Vector3 figurPos;
-        public Matrix projectionMatrix;
-        public Matrix viewMatrix;
+        Matrix projectionMatrix;
+        Matrix viewMatrix;
         Matrix worldMatrix;
         Matrix figurMatrix;
 
-        Schachfigur test;
-        public Model schachbrett;
-        public Model figur;
+        Schachfigur select;
+        bool isselected;
+        Model schachbrett;
+        Model figur;
+        Model coinw;
+        Model coinb;
         Schachfigur[] w=new Schachfigur[8]; //weiße Figuren
         Schachfigur[] b = new Schachfigur[8]; //schwarze Figuren
 
@@ -77,10 +80,11 @@ namespace Actionschach
             float j = -14;
             for (int i = 0; i < 8; i++)
             {
-                w[i] = new Schachfigur(new Vector3(10f, j, 0f), figur);
-                b[i] = new Schachfigur(new Vector3(-10f, j, 0f), schachbrett);
+                w[i] = new Schachfigur(new Vector3(10f, j, 0f), coinw);
+                b[i] = new Schachfigur(new Vector3(-10f, j, 0f), coinb);
                 j += 4;
             }
+            isselected = false;
 
 
     }
@@ -95,7 +99,9 @@ namespace Actionschach
             startButton = this.Content.Load<Texture2D>("StartButton");
             skinButton = this.Content.Load<Texture2D>("SkinButton");
             cursor = this.Content.Load<Texture2D>("Cursor");
-            
+            coinb = this.Content.Load<Model>("coinb");
+            coinw = this.Content.Load<Model>("coinw");
+
             schachbrett = Content.Load<Model>("schachbrett");
             figur = Content.Load<Model>("coin2");
             // TODO: use this.Content to load your game content here
@@ -213,6 +219,23 @@ namespace Actionschach
         
          void UpdateGameplay(GameTime deltaTime)
          {
+            MouseState m = Mouse.GetState();
+            position.X = m.X;
+            position.Y = m.Y;
+
+            if (click())
+            {
+                if (isselected)
+                {
+                    select.move(GetVector());
+                    select = null;
+                    isselected = false;
+                }
+                else
+                {
+                    figurselection(deltaTime);
+                }
+            }
              if (Keyboard.GetState().IsKeyDown(Keys.Left))  //Kamera
             {
                 camPosition = Vector3.Normalize(camPosition + Vector3.Normalize(Vector3.Cross(new Vector3(0, 0, 2), camPosition))) * camPosition.Length();
@@ -273,6 +296,30 @@ namespace Actionschach
                          Vector3.Up);
         }
          
+        public void figurselection(GameTime deltaTime)
+        {
+            Vector3 t = GetVector();
+            select = GetFigur(t);
+            if (select != null)
+                isselected = true;
+        }
+
+        public Schachfigur GetFigur(Vector3 v)
+        {
+            for(int i = 0; i < w.Length; i++)
+            {
+                if (v.Equals(w[i].position))
+                {
+                    return w[i];
+                }
+                if (v.Equals(b[i].position))
+                {
+                    return b[i];
+                }
+            }
+            return null;
+        }
+
          void UpdateSkinMenu(GameTime deltaTime)
          {
 
@@ -359,24 +406,24 @@ namespace Actionschach
             spriteBatch.End();
         }
 
-        public Vector3 GetVector(Vector2 mausp)
+        public Vector3 GetVector()
         {
             int schritt = 4;// Breite der Feldér
             int x=400;
             int y=216;
             int zeile = 0;
             int spalte = 0;
-            while (mausp.X > x)
+            while (position.X > x)
             {
                 spalte++;
                 x += (schritt * 7);
             }
-            while (mausp.Y > y)
+            while (position.Y > y)
             {
                 zeile++;
                 y += (schritt * 9);
             }
-            return new Vector3((spalte-4)*schritt, (zeile - 4) * schritt,0);
+            return new Vector3((spalte-4)*schritt+2, (zeile - 4) * schritt+2,0);
         }
 
 
@@ -385,6 +432,12 @@ namespace Actionschach
 
         public class Schachfigur
         {
+            public Vector3 position;
+            private Vector3 destiny;
+            private bool moving;
+            Model m;
+            bool alive;
+
             public Schachfigur(Vector3 pos,Model mod)
             {
                 position = pos;
@@ -442,16 +495,7 @@ namespace Actionschach
                     }
                     mesh.Draw();
                 }
-            }
-
-
-            private Vector3 position;
-            private Vector3 destiny;
-            private bool moving;
-            Model m;
-            bool alive;
-
-
+            }            
         }
     }
 }
