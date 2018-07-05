@@ -236,6 +236,11 @@ namespace Actionschach
                     figurselection(deltaTime);
                 }
             }
+            if (m.RightButton == ButtonState.Pressed)
+            {
+                select = null;
+                isselected = false;
+            }
              if (Keyboard.GetState().IsKeyDown(Keys.Left))  //Kamera
             {
                 camPosition = Vector3.Normalize(camPosition + Vector3.Normalize(Vector3.Cross(new Vector3(0, 0, 2), camPosition))) * camPosition.Length();
