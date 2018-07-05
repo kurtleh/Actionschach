@@ -423,7 +423,7 @@ namespace Actionschach
                 zeile++;
                 y += (schritt * 9);
             }
-            return new Vector3((spalte-4)*schritt+2, (zeile - 4) * schritt+2,0);
+            return new Vector3(-((spalte-4)*schritt-2), -((zeile - 4) * schritt-2),0);
         }
 
 
