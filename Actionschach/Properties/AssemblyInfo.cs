@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Actionschach")]
-[assembly: AssemblyProduct("Actionschach")]
+[assembly: AssemblyTitle("Schach")]
+[assembly: AssemblyProduct("Schach")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9f00f148-32fa-4ed3-92e5-e107689927ac")]
+[assembly: Guid("2fbd36f3-cd1e-43ab-bacb-b2a168a191d9")]
 
 // Version information for an assembly consists of the following four values:
 //

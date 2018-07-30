@@ -4,9 +4,12 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/StartButton.png</File>
-    <File>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/Cursor.png</File>
-    <File>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/SkinButton.png</File>
-    <File>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/coin.fbx</File>
+    <File>C:/Users/ray/source/repos/Schach/Schach/Content/schachbrett.jpg</File>
+    <File>C:/Users/ray/source/repos/Schach/Schach/Content/chessboard.x</File>
+    <File>C:/Users/ray/source/repos/Schach/Schach/Content/Cursor.png</File>
+    <File>C:/Users/ray/source/repos/Schach/Schach/Content/kugel.x</File>
+    <File>C:/Users/ray/source/repos/Schach/Schach/Content/turmneu.x</File>
+    <File>C:/Users/ray/source/repos/Schach/Schach/Content/testbild.jpg</File>
+    <File>C:/Users/ray/source/repos/Schach/Schach/Content/wurfel.x</File>
   </SourceFiles>
 </SourceFileCollection>

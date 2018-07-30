@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6B875F66-8EE0-4ECD-8E34-199C5DF2F842}</ProjectGuid>
+    <ProjectGuid>{5AF90686-B3BB-4AD8-AC51-32BFCADF9864}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Actionschach</RootNamespace>

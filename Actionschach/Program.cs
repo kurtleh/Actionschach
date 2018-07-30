@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Actionschach
+namespace Schach
 {
 #if WINDOWS || LINUX
     /// <summary>

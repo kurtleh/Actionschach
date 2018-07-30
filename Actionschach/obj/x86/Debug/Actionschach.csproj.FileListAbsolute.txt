@@ -1,29 +1,34 @@
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Actionschach.exe
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Actionschach.pdb
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\MonoGame.Framework.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.DXGI.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XInput.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\MonoGame.Framework.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.DXGI.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XInput.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csprojResolveAssemblyReference.cache
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csproj.CoreCompileInputs.cache
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csproj.CopyComplete
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.exe
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Debug\Actionschach.pdb
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\StartButton.xnb
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\Cursor.xnb
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\SkinButton.xnb
-C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\coin.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Actionschach.exe
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Actionschach.pdb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Users\ray\source\repos\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csprojAssemblyReference.cache
+C:\Users\ray\source\repos\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csproj.CoreCompileInputs.cache
+C:\Users\ray\source\repos\Actionschach\Actionschach\obj\x86\Debug\Actionschach.csproj.CopyComplete
+C:\Users\ray\source\repos\Actionschach\Actionschach\obj\x86\Debug\Actionschach.exe
+C:\Users\ray\source\repos\Actionschach\Actionschach\obj\x86\Debug\Actionschach.pdb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\blwu.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\chessboard.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\Cursor.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\grwu.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\schachbrett.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\schachbrett_0.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\StartButton.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\turm3.xnb
+C:\Users\ray\source\repos\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\SkinButton.xnb
