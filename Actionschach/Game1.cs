@@ -29,18 +29,27 @@ namespace Actionschach
         //Camera
         Vector3 camTarget;
         Vector3 camPosition;
+
+        Vector3 figurPos;
         Matrix projectionMatrix;
         Matrix viewMatrix;
         Matrix worldMatrix;
+        Matrix figurMatrix;
 
-        Model model;
-
-        //Orbit
-        bool orbit = false;
+        Schachfigur select;
+        bool isselected;
+        Model schachbrett;
+        Model figur;
+        Model coinw;
+        Model coinb;
+        Schachfigur[] w=new Schachfigur[8]; //weiße Figuren
+        Schachfigur[] b = new Schachfigur[8]; //schwarze Figuren
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this){
+                PreferredBackBufferWidth=1024,
+                PreferredBackBufferHeight=720 };
             Content.RootDirectory = "Content";
             
         }
@@ -54,21 +63,30 @@ namespace Actionschach
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-           
-            base.Initialize();
-
-            //Setup Camera
+            _state = GameState.MainMenu;
             camTarget = new Vector3(0f, 0f, 0f);
-            camPosition = new Vector3(0f, 0f, -100f);
+            camPosition = new Vector3(0f, -5f, -100f);
+            figurPos = new Vector3(1f, 0f, 0f);
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                                MathHelper.ToRadians(45f),
                                GraphicsDevice.DisplayMode.AspectRatio,1f, 1000f);
             viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
-                         new Vector3(0f, 1f, 0f));// Y up
-            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.
-                          Forward, Vector3.Up);
-            model = Content.Load<Model>("coin");
+                         new Vector3(0f, 1f, 0f));
+            worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
+              // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            base.Initialize();
+            float j = -14;
+            for (int i = 0; i < 8; i++)
+            {
+                w[i] = new Schachfigur(new Vector3(10f, j, 0f), coinw);
+                b[i] = new Schachfigur(new Vector3(-10f, j, 0f), coinb);
+                j += 4;
+            }
+            isselected = false;
+
+
     }
 
         /// <summary>
@@ -77,12 +95,15 @@ namespace Actionschach
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+         
             startButton = this.Content.Load<Texture2D>("StartButton");
             skinButton = this.Content.Load<Texture2D>("SkinButton");
             cursor = this.Content.Load<Texture2D>("Cursor");
-            _state = GameState.MainMenu;
+            coinb = this.Content.Load<Model>("coinb");
+            coinw = this.Content.Load<Model>("coinw");
+
+            schachbrett = Content.Load<Model>("schachbrett");
+            figur = Content.Load<Model>("coin2");
             // TODO: use this.Content to load your game content here
         }
 
@@ -125,7 +146,7 @@ namespace Actionschach
                     UpdateSkinMenu(gameTime);
                     break;
             }
-            if (state.LeftButton == ButtonState.Pressed)
+            if (state.LeftButton == ButtonState.Pressed)    //für klicks
             {
                 lastmousestate = ButtonState.Pressed;
             }
@@ -143,7 +164,7 @@ namespace Actionschach
             if (position.X < 450  &&
         position.X > 300 &&
         position.Y < 150 &&
-        position.Y > 50 && state.LeftButton == ButtonState.Pressed && lastmousestate == ButtonState.Released)
+        position.Y > 50 && click())
             {
                 return true;
             }
@@ -157,8 +178,8 @@ namespace Actionschach
             position.Y = state.Y;
             if (position.X < 450 &&
         position.X > 300 &&
-        position.Y < 150 &&
-        position.Y > 200 && state.LeftButton==ButtonState.Pressed && lastmousestate==ButtonState.Released)
+        position.Y < 350 &&
+        position.Y > 200 && click())
             {
                 return true;
             }
@@ -173,11 +194,17 @@ namespace Actionschach
             if (position.X < 450 &&
         position.X > 300 &&
         position.Y < 150 &&
-        position.Y > 50 && state.LeftButton == ButtonState.Pressed && lastmousestate == ButtonState.Released)
+        position.Y > 50 && click())
             {
                 return true;
             }
             return false;
+        }
+
+        public bool click()
+        {
+            MouseState state = Mouse.GetState();
+            return (state.LeftButton == ButtonState.Pressed && lastmousestate == ButtonState.Released);
         }
 
 
@@ -192,38 +219,115 @@ namespace Actionschach
         
          void UpdateGameplay(GameTime deltaTime)
          {
-             if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            MouseState m = Mouse.GetState();
+            position.X = m.X;
+            position.Y = m.Y;
+
+            if (click())
             {
-                camPosition.X -= 1f;
+                if (isselected)
+                {
+                    select.move(GetVector());
+                    select = null;
+                    isselected = false;
+                }
+                else
+                {
+                    figurselection(deltaTime);
+                }
+            }
+            if (m.RightButton == ButtonState.Pressed)
+            {
+                select = null;
+                isselected = false;
+            }
+             if (Keyboard.GetState().IsKeyDown(Keys.Left))  //Kamera
+            {
+                camPosition = Vector3.Normalize(camPosition + Vector3.Normalize(Vector3.Cross(new Vector3(0, 0, 2), camPosition))) * camPosition.Length();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                camPosition.X += 1f;
+                camPosition = Vector3.Normalize(camPosition - Vector3.Normalize(Vector3.Cross(new Vector3(0,0,2),camPosition))) * camPosition.Length();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                camPosition.Y -= 1f;
+                if (camPosition.X == 0 && camPosition.Y == 0)
+                {
+                    camPosition = Vector3.Normalize(camPosition - (new Vector3(0, 0, 2))) * camPosition.Length();
+                }
+                else
+                {
+                    camPosition = Vector3.Normalize(camPosition - (new Vector3(0, 0, 2))) * camPosition.Length();
+                }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                camPosition.Y += 1f;
+               camPosition = Vector3.Normalize(camPosition + (new Vector3(0, 0, 2))) * camPosition.Length();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.OemPlus))
             {
-                camPosition.Z += 1f;
+                camPosition -= Vector3.Normalize(camPosition);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.OemMinus))
             {
-                camPosition.Z -= 1f;
+                camPosition += Vector3.Normalize(camPosition);
             }
-            
-         }
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))    //Standard Kameraposition
+            {
+                camPosition.X = 0;
+                camPosition.Y = -5f;
+                camPosition.Z = -100f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))  //Test
+            {
+                figurPos.Y -= 1f;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.T))
+            {
+                figurPos.X += 0f;
+            }
+            if (camPosition.Z > -3f)          //Grenze fürs Ranzoomen
+            {
+                float t = camPosition.Length();
+                camPosition.Z = -3f;
+                camPosition = Vector3.Normalize(camPosition) * t;
+            }
+            for (int i = 0; i < 8; i++){
+                w[i].update(deltaTime);
+                b[i].update(deltaTime);
+            }
+            figurMatrix = Matrix.CreateWorld(figurPos, Vector3.Forward, Vector3.Up);
+            viewMatrix = Matrix.CreateLookAt(camPosition, camTarget,
+                         Vector3.Up);
+        }
          
+        public void figurselection(GameTime deltaTime)
+        {
+            Vector3 t = GetVector();
+            select = GetFigur(t);
+            if (select != null)
+                isselected = true;
+        }
+
+        public Schachfigur GetFigur(Vector3 v)
+        {
+            for(int i = 0; i < w.Length; i++)
+            {
+                if (v.Equals(w[i].position))
+                {
+                    return w[i];
+                }
+                if (v.Equals(b[i].position))
+                {
+                    return b[i];
+                }
+            }
+            return null;
+        }
+
          void UpdateSkinMenu(GameTime deltaTime)
          {
-             // Update scores
-             // Do any animations, effects, etc for getting a high score
-             // Respond to user input to restart level, or go back to main menu
+
              if (pressedMenubutton())
                  _state = GameState.MainMenu;
          }
@@ -240,6 +344,7 @@ namespace Actionschach
             
 
             base.Draw(gameTime);
+            
             switch (_state)
             {
                 case GameState.MainMenu:
@@ -252,7 +357,9 @@ namespace Actionschach
                     DrawSkinMenu(gameTime);
                     break;
             }
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
+            spriteBatch.End();
 
         }
 
@@ -261,13 +368,12 @@ namespace Actionschach
             spriteBatch.Begin();
             spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 200, 150, 100));
-            spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
 
        void DrawGameplay(GameTime deltaTime)
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in schachbrett.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -279,14 +385,122 @@ namespace Actionschach
                 }
                 mesh.Draw();
             }
+            foreach (ModelMesh mesh in figur.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    //effect.EnableDefaultLighting();
+                    effect.AmbientLightColor = new Vector3(1f, 0, 0);
+                    effect.View = viewMatrix;
+                    effect.World = figurMatrix;
+                    effect.Projection = projectionMatrix;
+                }
+                mesh.Draw();
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                w[i].draw(deltaTime, viewMatrix, projectionMatrix);
+                b[i].draw(deltaTime, viewMatrix, projectionMatrix);
+            }
         }
         
         void DrawSkinMenu(GameTime deltaTime)
         {
             spriteBatch.Begin();
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
-            spriteBatch.Draw(cursor, position, origin: new Vector2(0, 0));
             spriteBatch.End();
+        }
+
+        public Vector3 GetVector()
+        {
+            int schritt = 4;// Breite der Feldér
+            int x=400;
+            int y=216;
+            int zeile = 0;
+            int spalte = 0;
+            while (position.X > x)
+            {
+                spalte++;
+                x += (schritt * 7);
+            }
+            while (position.Y > y)
+            {
+                zeile++;
+                y += (schritt * 9);
+            }
+            return new Vector3(-((spalte-4)*schritt-2), -((zeile - 4) * schritt-2),0);
+        }
+
+
+
+
+
+        public class Schachfigur
+        {
+            public Vector3 position;
+            private Vector3 destiny;
+            private bool moving;
+            Model m;
+            bool alive;
+
+            public Schachfigur(Vector3 pos,Model mod)
+            {
+                position = pos;
+                moving = false;
+                destiny = pos;
+                alive = true;
+                m = mod;
+            }
+
+            public Matrix getPosition()
+            {
+                return Matrix.CreateWorld(this.position, Vector3.Forward, Vector3.Up);
+            }
+
+            public void move(Vector3 ziel)
+            {
+                destiny = ziel;
+                moving = true;
+            }
+
+            public void update(GameTime deltatime)
+            {
+                if (moving)
+                {
+                    if (position == destiny)
+                    {
+                        moving = false;
+                    }
+                    else
+                    {
+                        Vector3 direction = Vector3.Normalize(destiny - position);
+                        if ((destiny - position).Length() > destiny.Length())
+                        {
+                            position = position + direction;
+                        }
+                        else
+                        {
+                            position = destiny;
+                        }
+                    }
+                }
+            }
+
+            public void draw(GameTime DeltaTime,Matrix viewMatrix,Matrix projectionMatrix)
+            {
+                foreach (ModelMesh mesh in this.m.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        //effect.EnableDefaultLighting();
+                        effect.AmbientLightColor = new Vector3(1f, 0, 0);
+                        effect.View = viewMatrix;
+                        effect.World = Matrix.CreateWorld(position, Vector3.Forward, Vector3.Up);
+                        effect.Projection = projectionMatrix;
+                    }
+                    mesh.Draw();
+                }
+            }            
         }
     }
 }
