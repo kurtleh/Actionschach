@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin StartButton.png
+#begin schachbrett.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,33 +23,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:StartButton.png
+/build:schachbrett.jpg
 
-#begin Cursor.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Cursor.png
-
-#begin SkinButton.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SkinButton.png
-
-#begin schachbrett.x
+#begin chessboard.x
 /importer:XImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -65,29 +41,10 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=NoChange
-/build:schachbrett.x
+/processorParam:TextureFormat=Compressed
+/build:chessboard.x
 
-#begin coin.dae
-/importer:OpenAssetImporter
-/processor:ModelProcessor
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
-/build:coin.dae
-
-#begin coinTexture.png
+#begin Cursor.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -97,10 +54,10 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:coinTexture.png
+/build:Cursor.png
 
-#begin coin2.dae
-/importer:OpenAssetImporter
+#begin kugel.x
+/importer:XImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
@@ -113,13 +70,13 @@
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=1
+/processorParam:Scale=0.09
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
-/build:coin2.dae
+/processorParam:TextureFormat=Compressed
+/build:kugel.x
 
-#begin coinb.x
-/importer:OpenAssetImporter
+#begin turmneu.x
+/importer:XImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
@@ -132,13 +89,27 @@
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=1
+/processorParam:Scale=-0.11
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
-/build:coinb.x
+/processorParam:TextureFormat=Compressed
+/build:turmneu.x
 
-#begin coinw.x
-/importer:OpenAssetImporter
+#begin testbild.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:testbild.jpg
+
+
+#begin wurfel.x
+
+/importer:XImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
@@ -151,8 +122,8 @@
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=1
+/processorParam:Scale=0.1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
-/build:coinw.x
 
+/processorParam:TextureFormat=Compressed
+/build:wurfel.x
