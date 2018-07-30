@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/coin.fbx</SourceFile>
-  <SourceTime>2018-04-16T15:01:23.8317834+02:00</SourceTime>
-  <DestFile>C:/Users/Kurt/Studium/Software Projekt 3D Game/Game/Actionschach/Actionschach/Content/bin/Windows/coin.xnb</DestFile>
-  <DestTime>2018-06-16T17:08:26.5585367+02:00</DestTime>
+  <SourceFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/coin.fbx</SourceFile>
+  <SourceTime>2018-07-27T08:55:27.0511053+02:00</SourceTime>
+  <DestFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bin/Windows/coin.xnb</DestFile>
+  <DestTime>2018-07-27T08:56:19.072315+02:00</DestTime>
   <Importer>FbxImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
