@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/Cursor.png</SourceFile>
-  <SourceTime>2018-08-04T11:51:03.2217592+02:00</SourceTime>
-  <DestFile>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/bin/Windows/Cursor.xnb</DestFile>
-  <DestTime>2018-08-04T16:39:51.71202+02:00</DestTime>
+  <SourceFile>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/testbild.jpg</SourceFile>
+  <SourceTime>2018-08-04T11:51:03.4401595+02:00</SourceTime>
+  <DestFile>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/bin/Windows/testbild.xnb</DestFile>
+  <DestTime>2018-08-04T16:39:52.882022+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
