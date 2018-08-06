@@ -13,7 +13,15 @@ namespace Actionschach {
         Skinmenu,
     }
 
-
+    enum Figurentyp
+    {
+        Bauer,
+        Turm,
+        Springer,
+        Laeufer,
+        Queen,
+        King
+    }
     public class Game1 : Game {
         GraphicsDeviceManager graphics; 
         SpriteBatch spriteBatch;
@@ -617,6 +625,7 @@ public bool pressedStartbutton()
             Model m;
             bool alive;
             public Matrix figurm;
+            private Figurentyp f;
 
             public Schachfigur(Matrix model)
             { figurm = model; }
