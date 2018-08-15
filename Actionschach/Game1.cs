@@ -13,7 +13,13 @@ namespace Actionschach {
         Skinmenu,
     }
 
-    enum Figurentyp
+    public enum Team
+    {
+        blau,
+        rot
+    }
+
+    public enum Figurentyp
     {
         Bauer,
         Turm,
@@ -56,6 +62,13 @@ namespace Actionschach {
         private Model brett; //scale=1
         private Matrix view;
 
+        //Modelle
+        public Model bauerm;
+        public Model turmm;
+        public Model springerm;
+        public Model lauferm;
+        public Model kingm;
+        public Model queenm;
        
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(zoom),2
@@ -73,10 +86,9 @@ namespace Actionschach {
         private Matrix[] worldm = new Matrix[64];
 
         //Raster
-        private Vector2 raster(int x, int y){
-            Vector2 tmp;
-            tmp.X = (-7 + 2 * x) * 0.1245f;
-            tmp.Y = (-7 + 2 * y) * 0.1245f;
+        public static Vector2 raster(Vector2 tmp){
+            tmp.X = (-7 + 2 * tmp.X) * 0.1245f;
+            tmp.Y = (-7 + 2 * tmp.Y) * 0.1245f;
             return tmp;
         }
 
@@ -111,7 +123,7 @@ namespace Actionschach {
         public bool belegt(Matrix m) {
             bool a = false;
             for (int i = 0; i < 32; i++) {
-                if (m == figur[i].figurm) { 
+                if (m.Equals(figur[i].figurm)) { 
                 a = true;
                     itmp = i; //Nummer der Schachfigur auf belegtem feld
                 }
@@ -135,31 +147,26 @@ namespace Actionschach {
             int k = 0; 
             for (int i = 0; i < 8; i++){
                 for (int j = 0; j < 8; j++){
-                    worldm[k] = Matrix.CreateTranslation(raster(j,i).X,raster(j,i).Y, 0);
+                    worldm[k] = Matrix.CreateTranslation(raster(new Vector2(j,i)).X,raster(new Vector2(j,i)).Y, 0);
                     k++;
                 }
             }
             //Startaufstellung
             for (int i = 0; i < 8; i++)
-
             {
-                figur[i]=new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i, 0).X, raster(i, 0).Y, 0)));
+                figur[i]=new Schachfigur(i,0,Figurentyp.Turm);
             }
             for (int i = 8; i < 16; i++)
             {
-                figur[i] =new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i - 8, 1).X, raster(i - 8, 1).Y, 0)));
+                figur[i] =new Schachfigur(i-8,1, Figurentyp.Turm);
             }
-
-
-        
-
-  for (int i = 16; i < 24; i++)
+            for (int i = 16; i < 24; i++)
             {
-                figur[i] =new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i - 16, 6).X, raster(i - 16, 6).Y, 0)));
+                figur[i] =new Schachfigur(i-16,6, Figurentyp.Turm);
             }
               for (int i = 24; i < 32; i++)
             {
-                figur[i] =new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i - 24, 7).X, raster(i - 24, 7).Y, 0)));
+                figur[i] =new Schachfigur(i-24,7, Figurentyp.Turm);
             }
 
 
@@ -206,9 +213,10 @@ public bool pressedStartbutton()
 
 
             brett = Content.Load<Model>("chessboard");
+            turmm = Content.Load<Model>("turmneu");
 
             for (int i = 0; i < 32; i++)
-                figur[i].SetModel(Content.Load<Model>("turmneu"));
+                figur[i].SetModel(turmm);
 
             maus = Content.Load<Model>("kugel");
             zeiger = Content.Load<Texture2D>("Cursor"); }
@@ -421,6 +429,10 @@ public bool pressedStartbutton()
                   zugErfolgt = false;
               }
               */
+              for (int i=0;i<32; i++)
+            {
+                figur[i].update(deltaTime);
+            }
         }
 
         /*  public void figurselection(GameTime deltaTime)
@@ -619,20 +631,26 @@ public bool pressedStartbutton()
 
         public class Schachfigur
         {
-            public Vector3 position;
+            public Vector2 position;
             private Vector3 destiny;
             private bool moving;
             Model m;
             bool alive;
             public Matrix figurm;
             private Figurentyp f;
+            private Vector3 movposition;
 
-            public Schachfigur(Matrix model)
-            { figurm = model; }
+            public Schachfigur(int x,int y,Figurentyp typ)
+            {
+                position = new Vector2(x, y);
+                alive = true;
+                f = typ;
+                figurm=Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
+            }
 
             public Matrix getPosition()
             {
-                return Matrix.CreateWorld(this.position, Vector3.Forward, Vector3.Up);
+                return figurm;
             }
 
             public void SetModel(Model model)
@@ -645,32 +663,68 @@ public bool pressedStartbutton()
                 return m;
             }
 
-            public void move(Vector3 ziel)
+            public bool possiblemove(Vector2 test)
             {
-                destiny = ziel;
+                switch (f)
+                {
+                    case Figurentyp.Bauer:
+                        return true;
+                    case Figurentyp.Turm:
+                        if (position.X == test.X && position.Y != test.Y || position.X != test.X && position.Y == test.Y)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    case Figurentyp.Springer:
+                        return true;
+                    case Figurentyp.Laeufer:
+                        return true;
+                    case Figurentyp.King:
+                        return true;
+                    case Figurentyp.Queen:
+                        return true;
+                }
+                return false;
+            }
+
+            public void move(Vector2 ziel)
+            {
+                movposition = new Vector3(raster(position), 0);
+                destiny.X = raster(ziel).X;
+                destiny.Y = raster(ziel).Y;
+                destiny.Z = 0;
                 moving = true;
+                position = ziel;
             }
 
             public void update(GameTime deltatime)
             {
-                if (moving)
+                
+                  if (moving)
+                  {
+                      if (movposition == destiny)
+                      {
+                          moving = false;
+                      }
+                      else
+                      {
+                          Vector3 direction = Vector3.Normalize(destiny - movposition);
+                          if ((destiny - movposition).Length() > destiny.Length())
+                          {
+                              movposition = movposition + direction;
+                          }
+                          else
+                          {
+                              movposition = destiny;
+                          }
+                      }
+                }
+                else
                 {
-                    if (position == destiny)
-                    {
-                        moving = false;
-                    }
-                    else
-                    {
-                        Vector3 direction = Vector3.Normalize(destiny - position);
-                        if ((destiny - position).Length() > destiny.Length())
-                        {
-                            position = position + direction;
-                        }
-                        else
-                        {
-                            position = destiny;
-                        }
-                    }
+                    figurm= Matrix.CreateTranslation(new Vector3(raster(position), 0));
                 }
             }
 
