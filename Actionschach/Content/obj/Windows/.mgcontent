@@ -4,12 +4,12 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/schachbrett.jpg</File>
-    <File>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/chessboard.x</File>
-    <File>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/Cursor.png</File>
-    <File>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/kugel.x</File>
-    <File>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/turmneu.x</File>
-    <File>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/testbild.jpg</File>
-    <File>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/wurfel.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/schachbrett.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/chessboard.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/Cursor.png</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/kugel.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmneu.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/testbild.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/wurfel.x</File>
   </SourceFiles>
 </SourceFileCollection>

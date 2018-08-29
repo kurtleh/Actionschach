@@ -154,19 +154,19 @@ namespace Actionschach {
             //Startaufstellung
             for (int i = 0; i < 8; i++)
             {
-                figur[i]=new Schachfigur(i,0,Figurentyp.Turm);
+                figur[i]=new Schachfigur(i,0,Figurentyp.Turm,true);
             }
             for (int i = 8; i < 16; i++)
             {
-                figur[i] =new Schachfigur(i-8,1, Figurentyp.Turm);
+                figur[i] =new Schachfigur(i-8,1, Figurentyp.Bauer,true);
             }
             for (int i = 16; i < 24; i++)
             {
-                figur[i] =new Schachfigur(i-16,6, Figurentyp.Turm);
+                figur[i] =new Schachfigur(i-16,6, Figurentyp.Bauer,false);
             }
               for (int i = 24; i < 32; i++)
             {
-                figur[i] =new Schachfigur(i-24,7, Figurentyp.Turm);
+                figur[i] =new Schachfigur(i-24,7, Figurentyp.Turm,false);
             }
 
 
@@ -625,9 +625,18 @@ public bool pressedStartbutton()
             return new Vector3(-((spalte-4)*schritt-2), -((zeile - 4) * schritt-2),0);
         }
 
-
-
-
+        public int wer(Vector2 pos)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                if (figur[i].position == pos && figur[i].alive)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        
 
         public class Schachfigur
         {
@@ -635,17 +644,19 @@ public bool pressedStartbutton()
             private Vector3 destiny;
             private bool moving;
             Model m;
-            bool alive;
+            public bool alive;
             public Matrix figurm;
             private Figurentyp f;
             private Vector3 movposition;
+            bool iswhite;
 
-            public Schachfigur(int x,int y,Figurentyp typ)
+            public Schachfigur(int x,int y,Figurentyp typ,bool white)
             {
                 position = new Vector2(x, y);
                 alive = true;
                 f = typ;
                 figurm=Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
+                iswhite = white;
             }
 
             public Matrix getPosition()
@@ -663,12 +674,34 @@ public bool pressedStartbutton()
                 return m;
             }
 
-            public bool possiblemove(Vector2 test)
+            public bool isEnemy(bool other)
             {
+                return iswhite != other;
+            }
+
+            public bool possiblemove(Vector2 test, Game1 g)
+            {
+                int fi = g.wer(test);
                 switch (f)
                 {
                     case Figurentyp.Bauer:
-                        return true;
+                        if (iswhite)
+                        {
+                            if (test.Y - position.Y == 1 && fi < 0)
+                                return true;
+                            else
+                            {
+                                if (position.Y == 1 && test.Y - position.Y == 2 && fi < 0)
+                                    return true;
+                                else
+                                {
+                                    if (test.Y - position.Y == 1 && Math.Abs(test.X - position.X) == 1 && fi>=0 && g.figur[fi].isEnemy(iswhite))
+                                        return true;
+                                }
+                            }
+                            return false;
+                        }
+                        break;
                     case Figurentyp.Turm:
                         if (position.X == test.X && position.Y != test.Y || position.X != test.X && position.Y == test.Y)
                         {

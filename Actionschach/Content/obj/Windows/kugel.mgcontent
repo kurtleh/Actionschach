@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/kugel.x</SourceFile>
-  <SourceTime>2018-08-04T11:51:03.4089595+02:00</SourceTime>
-  <DestFile>C:/Users/Maja/Documents/GitHub/Actionschach/Actionschach/Content/bin/Windows/kugel.xnb</DestFile>
-  <DestTime>2018-08-04T16:39:51.8524202+02:00</DestTime>
+  <SourceFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/kugel.x</SourceFile>
+  <SourceTime>2018-08-25T08:59:01.817924+02:00</SourceTime>
+  <DestFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bin/Windows/kugel.xnb</DestFile>
+  <DestTime>2018-08-25T09:01:57.2826737+02:00</DestTime>
   <Importer>XImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
