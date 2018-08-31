@@ -681,17 +681,20 @@ public bool pressedStartbutton()
 
             public bool possiblemove(Vector2 test, Game1 g)
             {
+                if (test.X < 0 || test.X > 7 || test.Y < 0 || test.Y > 7)
+                    return false;
                 int fi = g.wer(test);
                 switch (f)
                 {
                     case Figurentyp.Bauer:
                         if (iswhite)
                         {
-                            if (test.Y - position.Y == 1 && fi < 0)
+                            if (test.Y - position.Y == 1 && position.X == test.X && fi < 0)
                                 return true;
                             else
                             {
-                                if (position.Y == 1 && test.Y - position.Y == 2 && fi < 0)
+                                if (position.Y == 1 && test.Y - position.Y == 2 && position.X==test.X && fi < 0)
+                                    if(g.wer(new Vector2(2,test.X))<0)
                                     return true;
                                 else
                                 {
@@ -701,24 +704,197 @@ public bool pressedStartbutton()
                             }
                             return false;
                         }
-                        break;
-                    case Figurentyp.Turm:
-                        if (position.X == test.X && position.Y != test.Y || position.X != test.X && position.Y == test.Y)
+                        else
                         {
-                            return true;
+                            if (test.Y - position.Y == -1 && position.X == test.X && fi < 0)
+                                return true;
+                            else
+                            {
+                                if (position.Y == 6 && test.Y - position.Y == -2 && position.X == test.X && fi < 0)
+                                    if (g.wer(new Vector2(5, test.X)) < 0)
+                                        return true;
+                                else
+                                {
+                                    if (test.Y - position.Y == -1 && Math.Abs(test.X - position.X) == 1 && fi >= 0 && g.figur[fi].isEnemy(iswhite))
+                                        return true;
+                                }
+                            }
+                            return false;
+                        }
+                    case Figurentyp.Turm:
+                        if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi<0)
+                        {
+                            if (position.X == test.X)
+                            {
+                                for(float i=Math.Min(position.Y,test.Y);i<Math.Max(position.Y, test.Y); i++)
+                                {
+                                    if (g.wer(new Vector2(position.X, i)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
+                            else
+                            {
+                                for (float i = Math.Min(position.X, test.X); i < Math.Max(position.X, test.X); i++)
+                                {
+                                    if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
                         }
                         else
                         {
-                            return false;
+                            if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi >= 0)
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                {
+                                    if (position.X == test.X)
+                                    {
+                                        for (float i = Math.Min(position.Y, test.Y); i < Math.Max(position.Y, test.Y); i++)
+                                        {
+                                            if (g.wer(new Vector2(position.X, i)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        for (float i = Math.Min(position.X, test.X); i < Math.Max(position.X, test.X); i++)
+                                        {
+                                            if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            }
                         }
-                    case Figurentyp.Springer:
-                        return true;
+                        return false;
                     case Figurentyp.Laeufer:
-                        return true;
+                        if (Math.Abs(position.X - test.X) == Math.Abs(position.Y - test.Y))
+                        {
+                            Vector2 p = new Vector2(position.X,position.Y);
+                            while (!p.Equals(test))
+                            {
+                                if (position.X < test.X)
+                                    p.X += 1;
+                                else
+                                    p.X -= 1;
+                                if (position.Y < test.Y)
+                                    p.Y += 1;
+                                else
+                                    p.Y -= 1;
+                                if (g.wer(p) >= 0)
+                                {
+                                    if (p.Equals(test))
+                                    {
+                                        if (fi >= 0 && g.figur[fi].isEnemy(iswhite))
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                        }
+                        return false;
+                    case Figurentyp.Springer:
+                        if(Math.Abs(Math.Abs(position.X-test.X)-Math.Abs(position.Y-test.Y))==1 && Math.Abs(position.X-test.X)<3 && Math.Abs(position.Y - test.Y) < 3)
+                        {
+                            if (fi < 0)
+                                return true;
+                            else
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                    return true;
+                            }
+                        }
+                        return false;
                     case Figurentyp.King:
-                        return true;
+                        if(Math.Abs(position.X-test.X)<2 && Math.Abs(position.Y - test.Y) < 2)
+                        {
+                            if (fi < 0)
+                                return true;
+                            else
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                    return true;
+                            }
+                        }
+                        return false;
                     case Figurentyp.Queen:
-                        return true;
+                        if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi < 0)
+                        {
+                            if (position.X == test.X)
+                            {
+                                for (float i = Math.Min(position.Y, test.Y); i < Math.Max(position.Y, test.Y); i++)
+                                {
+                                    if (g.wer(new Vector2(position.X, i)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
+                            else
+                            {
+                                for (float i = Math.Min(position.X, test.X); i < Math.Max(position.X, test.X); i++)
+                                {
+                                    if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi >= 0)
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                {
+                                    if (position.X == test.X)
+                                    {
+                                        for (float i = Math.Min(position.Y, test.Y); i < Math.Max(position.Y, test.Y); i++)
+                                        {
+                                            if (g.wer(new Vector2(position.X, i)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        for (float i = Math.Min(position.X, test.X); i < Math.Max(position.X, test.X); i++)
+                                        {
+                                            if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        if (Math.Abs(position.X - test.X) == Math.Abs(position.Y - test.Y))
+                        {
+                            Vector2 p = new Vector2(position.X, position.Y);
+                            while (!p.Equals(test))
+                            {
+                                if (position.X < test.X)
+                                    p.X += 1;
+                                else
+                                    p.X -= 1;
+                                if (position.Y < test.Y)
+                                    p.Y += 1;
+                                else
+                                    p.Y -= 1;
+                                if (g.wer(p) >= 0)
+                                {
+                                    if (p.Equals(test))
+                                    {
+                                        if (fi >= 0 && g.figur[fi].isEnemy(iswhite))
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                        }
+                        return false;
                 }
                 return false;
             }
