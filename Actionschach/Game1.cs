@@ -152,10 +152,14 @@ namespace Actionschach {
                 }
             }
             //Startaufstellung
-            for (int i = 0; i < 8; i++)
-            {
-                figur[i]=new Schachfigur(i,0,Figurentyp.Turm,true);
-            }
+            figur[0] = new Schachfigur(0, 0, Figurentyp.Turm, true);
+            figur[1] = new Schachfigur(1, 0, Figurentyp.Springer, true);
+            figur[2] = new Schachfigur(2, 0, Figurentyp.Laeufer, true);
+            figur[3] = new Schachfigur(3, 0, Figurentyp.King, true);
+            figur[4] = new Schachfigur(4, 0, Figurentyp.Queen, true);
+            figur[5] = new Schachfigur(5, 0, Figurentyp.Laeufer, true);
+            figur[6] = new Schachfigur(6, 0, Figurentyp.Springer, true);
+            figur[7] = new Schachfigur(7, 0, Figurentyp.Turm, true);
             for (int i = 8; i < 16; i++)
             {
                 figur[i] =new Schachfigur(i-8,1, Figurentyp.Bauer,true);
@@ -164,13 +168,17 @@ namespace Actionschach {
             {
                 figur[i] =new Schachfigur(i-16,6, Figurentyp.Bauer,false);
             }
-              for (int i = 24; i < 32; i++)
-            {
-                figur[i] =new Schachfigur(i-24,7, Figurentyp.Turm,false);
-            }
+            figur[24] = new Schachfigur(0, 7, Figurentyp.Turm, false);
+            figur[25] = new Schachfigur(1, 7, Figurentyp.Springer, false);
+            figur[26] = new Schachfigur(2, 7, Figurentyp.Laeufer, false);
+            figur[27] = new Schachfigur(3, 7, Figurentyp.King, false);
+            figur[28] = new Schachfigur(4, 7, Figurentyp.Queen, false);
+            figur[29] = new Schachfigur(5, 7, Figurentyp.Laeufer, false);
+            figur[30] = new Schachfigur(6, 7, Figurentyp.Springer, false);
+            figur[31] = new Schachfigur(7, 7, Figurentyp.Turm, false);
 
 
-         base.Initialize();
+            base.Initialize();
         }
         public bool pressedSkinbutton()
         {
@@ -409,10 +417,12 @@ public bool pressedStartbutton()
                 if (klick && Intersects(Maus, maus, worldm[i], view, projection, viewport)
                 && Mouse.GetState().RightButton == ButtonState.Pressed && !besetzt(worldm[i]))
                 {
-                    figur[itmp].figurm = Matrix.CreateScale(figur[itmp].figurm.M33) * Matrix.CreateTranslation(new Vector3(worldm[i].M41, worldm[i].M42, 0));
+                    if(figur[itmp].possiblemove(feld(i),this)){
+                        figur[itmp].move(feld(i), this, i);
                     klick = false;
                     itmp = -1;
                     zugErfolgt = true;
+                }
                 }
             }//</Maus>
 
@@ -636,6 +646,12 @@ public bool pressedStartbutton()
             }
             return -1;
         }
+
+        //gibt position des Feldes zurück im Bezug auf Schachbrett, erhält id der worldm
+        public Vector2 feld(int ri)
+        {
+            return new Vector2(ri % 8, ri / 8);
+        }
         
 
         public class Schachfigur
@@ -649,6 +665,7 @@ public bool pressedStartbutton()
             private Figurentyp f;
             private Vector3 movposition;
             bool iswhite;
+            Schachfigur opfer = null;
 
             public Schachfigur(int x,int y,Figurentyp typ,bool white)
             {
@@ -696,8 +713,7 @@ public bool pressedStartbutton()
                                 if (position.Y == 1 && test.Y - position.Y == 2 && position.X==test.X && fi < 0)
                                     if(g.wer(new Vector2(2,test.X))<0)
                                     return true;
-                                else
-                                {
+                            {
                                     if (test.Y - position.Y == 1 && Math.Abs(test.X - position.X) == 1 && fi>=0 && g.figur[fi].isEnemy(iswhite))
                                         return true;
                                 }
@@ -713,7 +729,7 @@ public bool pressedStartbutton()
                                 if (position.Y == 6 && test.Y - position.Y == -2 && position.X == test.X && fi < 0)
                                     if (g.wer(new Vector2(5, test.X)) < 0)
                                         return true;
-                                else
+                                
                                 {
                                     if (test.Y - position.Y == -1 && Math.Abs(test.X - position.X) == 1 && fi >= 0 && g.figur[fi].isEnemy(iswhite))
                                         return true;
@@ -899,15 +915,28 @@ public bool pressedStartbutton()
                 return false;
             }
 
-            public void move(Vector2 ziel)
+            public void move(Vector2 ziel, Game1 g,int i)
             {
-                movposition = new Vector3(raster(position), 0);
-                destiny.X = raster(ziel).X;
-                destiny.Y = raster(ziel).Y;
-                destiny.Z = 0;
-                moving = true;
-                position = ziel;
+                   movposition = new Vector3(raster(position), 0);
+                    destiny.X = raster(ziel).X;
+                    destiny.Y = raster(ziel).Y;
+                    destiny.Z = 0;
+                    moving = true;
+                    if (g.wer(ziel) >= 0) {
+                        opfer=g.figur[g.wer(ziel)];
+                    }
+                    position = ziel;
+                    figurm = Matrix.CreateScale(g.figur[g.itmp].figurm.M33) * Matrix.CreateTranslation(new Vector3(g.worldm[i].M41, g.worldm[i].M42, 0));
+                
             }
+
+            private void schlagen()
+            {
+                opfer.alive = false;
+                opfer.position=new Vector2(-1,-1);
+                opfer = null;
+            }
+
 
             public void update(GameTime deltatime)
             {
@@ -920,34 +949,63 @@ public bool pressedStartbutton()
                       }
                       else
                       {
-                          Vector3 direction = Vector3.Normalize(destiny - movposition);
+                          Vector3 direction = Vector3.Normalize(destiny - movposition)*0.1f;
                           if ((destiny - movposition).Length() > destiny.Length())
                           {
                               movposition = movposition + direction;
                           }
                           else
                           {
-                              movposition = destiny;
+                            movposition = destiny;
+                            if(opfer!=null)
+                            schlagen();
                           }
                       }
                 }
                 else
                 {
-                    figurm= Matrix.CreateTranslation(new Vector3(raster(position), 0));
+                    //figurm= Matrix.CreateTranslation(new Vector3(raster(position), 0));
                 }
             }
 
-            public void draw(Matrix viewMatrix,Matrix projectionMatrix)
+            public void draw(Matrix viewMatrix, Matrix projectionMatrix)
             {
-                foreach (ModelMesh mesh in m.Meshes)
+                if (alive)
                 {
-                    foreach (BasicEffect effect in mesh.Effects)
+                    if (moving)
                     {
-                        effect.World = figurm;
-                        effect.View = viewMatrix;
-                        effect.Projection = projectionMatrix;
+                        foreach (ModelMesh mesh in this.m.Meshes)
+
+                        {
+
+                            foreach (BasicEffect effect in mesh.Effects)
+
+                            {
+
+                                effect.View = viewMatrix;
+
+                                effect.World = Matrix.CreateWorld(movposition, Vector3.Forward, Vector3.Up);
+
+                                effect.Projection = projectionMatrix;
+
+                            }
+
+                            mesh.Draw();
+                        }
                     }
-                    mesh.Draw();
+                    else
+                    {
+                        foreach (ModelMesh mesh in m.Meshes)
+                        {
+                            foreach (BasicEffect effect in mesh.Effects)
+                            {
+                                effect.World = figurm;
+                                effect.View = viewMatrix;
+                                effect.Projection = projectionMatrix;
+                            }
+                            mesh.Draw();
+                        }
+                    }
                 }
             }            
         }
