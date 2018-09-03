@@ -106,9 +106,7 @@
 /processorParam:TextureFormat=Color
 /build:testbild.jpg
 
-
 #begin wurfel.x
-
 /importer:XImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -124,6 +122,13 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=0.1
 /processorParam:SwapWindingOrder=False
-
 /processorParam:TextureFormat=Compressed
 /build:wurfel.x
+
+#begin text.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:text.spritefont
+

@@ -30,3 +30,44 @@ C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\ob
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Release\Actionschach.csproj.CopyComplete
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Release\Actionschach.exe
 C:\Users\Kurt\Studium\Software Projekt 3D Game\Game\Actionschach\Actionschach\obj\x86\Release\Actionschach.pdb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\coin.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\coinTexture.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\SkinButton.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\StartButton.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\chessboard.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\coin2.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\coinb.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\coinw.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\Cursor.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\kugel.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\schachbrett.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\schachbrett_0.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\testbild.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\testbild_0.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\text.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\turmneu.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Content\wurfel.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Actionschach.exe
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\Actionschach.pdb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\MonoGame.Framework.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.XAudio2.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.DXGI.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.Direct3D11.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.Direct2D1.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.XInput.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.Direct3D9.dll
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\MonoGame.Framework.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.MediaFoundation.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.XAudio2.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.DXGI.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.Direct3D11.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.Direct2D1.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.XInput.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Release\SharpDX.Direct3D9.xml
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.csproj.CoreCompileInputs.cache
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.csproj.CopyComplete
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.exe
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.pdb
