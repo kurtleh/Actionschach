@@ -252,7 +252,7 @@ public bool pressedStartbutton()
              startButton = this.Content.Load<Texture2D>("StartButton");
              skinButton = this.Content.Load<Texture2D>("SkinButton");
             menueButton = this.Content.Load<Texture2D>("MenueButton");
-            resetButton = Content.Load<Texture2D>("StartButton");
+            resetButton = Content.Load<Texture2D>("ResetButton");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             text = Content.Load<SpriteFont>("text");
