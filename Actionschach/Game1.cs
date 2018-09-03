@@ -70,13 +70,19 @@ namespace Actionschach {
         private Matrix view;
 
         //Modelle
-        public Model bauerm;
-        public Model turmm;
-        public Model springerm;
-        public Model lauferm;
-        public Model kingm;
-        public Model queenm;
-       
+        public Model bauermw;
+        public Model turmmw;
+        public Model springermw;
+        public Model laufermw;
+        public Model kingmw;
+        public Model queenmw;
+        public Model bauermb;
+        public Model turmmb;
+        public Model springermb;
+        public Model laufermb;
+        public Model kingmb;
+        public Model queenmb;
+
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(zoom),2
            , 1f, 1000f);
@@ -130,7 +136,7 @@ namespace Actionschach {
         public bool belegt(Matrix m) {
             bool a = false;
             for (int i = 0; i < 32; i++) {
-                if (m.Equals(figur[i].figurm)) { 
+                if (m.M41==figur[i].figurm.M41&&m.M42==figur[i].figurm.M42) { 
                 a = true;
                     itmp = i; //Nummer der Schachfigur auf belegtem feld
                 }
@@ -155,7 +161,7 @@ namespace Actionschach {
             int k = 0; 
             for (int i = 0; i < 8; i++){
                 for (int j = 0; j < 8; j++){
-                    worldm[k] = Matrix.CreateTranslation(raster(new Vector2(j,i)).X,raster(new Vector2(j,i)).Y, 0);
+                    worldm[k] = Matrix.CreateScale(-0.9f) * Matrix.CreateTranslation(raster(new Vector2(j,i)).X,raster(new Vector2(j,i)).Y, 0);
                     k++;
                 }
             }
@@ -259,11 +265,39 @@ public bool pressedStartbutton()
             textposition = new Vector2(0, 0);
 
             brett = Content.Load<Model>("chessboard");
-            turmm = Content.Load<Model>("turmneu");
+            turmmw = Content.Load<Model>("turmblau");
+            turmmb = Content.Load<Model>("turmrot");
+            bauermw = Content.Load<Model>("bauerblau");
+            bauermb = Content.Load<Model>("bauerrot");
+            springermw = Content.Load<Model>("springerblau");
+            springermb = Content.Load<Model>("springerrot");
+            laufermw = Content.Load<Model>("lauferblau");
+            laufermb = Content.Load<Model>("lauferrot");
+            queenmw = Content.Load<Model>("dameblau");
+            queenmb = Content.Load<Model>("damerot");
+            kingmw = Content.Load<Model>("konigblau");
+            kingmb = Content.Load<Model>("konigrot");
 
-            for (int i = 0; i < 32; i++)
-                figur[i].SetModel(turmm);
-
+            for (int i = 8; i < 16; i++)
+                figur[i].SetModel(bauermw);
+            for (int i = 16; i < 24; i++)
+                figur[i].SetModel(bauermb);
+            figur[0].SetModel(turmmw);
+            figur[1].SetModel(springermw);
+            figur[2].SetModel(laufermw);
+            figur[3].SetModel(queenmw);
+            figur[4].SetModel(kingmw);
+            figur[5].SetModel(laufermw);
+            figur[6].SetModel(springermw);
+            figur[7].SetModel(turmmw);
+            figur[24].SetModel(turmmb);
+            figur[25].SetModel(springermb);
+            figur[26].SetModel(laufermb);
+            figur[27].SetModel(queenmb);
+            figur[28].SetModel(kingmb);
+            figur[29].SetModel(laufermb);
+            figur[30].SetModel(springermb);
+            figur[31].SetModel(turmmb);
             maus = Content.Load<Model>("kugel");
             zeiger = Content.Load<Texture2D>("Cursor"); }
 
@@ -775,8 +809,26 @@ public bool pressedStartbutton()
             figur[29].reset(5, 7, Figurentyp.Laeufer, false);
             figur[30].reset(6, 7, Figurentyp.Springer, false);
             figur[31].reset(7, 7, Figurentyp.Turm, false);
-            for (int i = 0; i < 32; i++)
-                figur[i].SetModel(turmm);
+            for (int i = 8; i < 16; i++)
+                figur[i].SetModel(bauermw);
+            for (int i = 16; i < 24; i++)
+                figur[i].SetModel(bauermb);
+            figur[0].SetModel(turmmw);
+            figur[1].SetModel(springermw);
+            figur[2].SetModel(laufermw);
+            figur[3].SetModel(queenmw);
+            figur[4].SetModel(kingmw);
+            figur[5].SetModel(laufermw);
+            figur[6].SetModel(springermw);
+            figur[7].SetModel(turmmw);
+            figur[24].SetModel(turmmb);
+            figur[25].SetModel(springermb);
+            figur[26].SetModel(laufermb);
+            figur[27].SetModel(queenmb);
+            figur[28].SetModel(kingmb);
+            figur[29].SetModel(laufermb);
+            figur[30].SetModel(springermb);
+            figur[31].SetModel(turmmb);
         }
 
         void DrawSkinMenu(GameTime deltaTime)
@@ -837,14 +889,22 @@ public bool pressedStartbutton()
             private Vector3 movposition;
             public bool iswhite;
             Schachfigur opfer = null;
+            Matrix TMPf;
+            Matrix TMPm;
+            float a=0;
+            float b=0;
 
             public Schachfigur(int x,int y,Figurentyp typ,bool white)
             {
                 position = new Vector2(x, y);
                 alive = true;
                 f = typ;
-                figurm=Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
+                figurm= Matrix.CreateScale(-0.12f) * Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
                 iswhite = white;
+                if (iswhite)
+                {
+                    figurm= Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                }
             }
 
             public Matrix getPosition()
@@ -1093,6 +1153,7 @@ public bool pressedStartbutton()
                     destiny.Y = raster(ziel).Y;
                     destiny.Z = 0;
                     moving = true;
+                
                     if (g.wer(ziel) >= 0) {
                     if (iswhite)
                     {
@@ -1107,8 +1168,10 @@ public bool pressedStartbutton()
                         opfer=g.figur[g.wer(ziel)];
                     }
                     position = ziel;
-                    figurm = Matrix.CreateScale(g.figur[g.itmp].figurm.M33) * Matrix.CreateTranslation(new Vector3(g.worldm[i].M41, g.worldm[i].M42, 0));
-                
+                //figurm = Matrix.CreateScale(figurm.M33)* Matrix.CreateTranslation(new Vector3(g.worldm[i].M41, g.worldm[i].M42, 0));
+                //figurm = Matrix.CreateRotationZ((float)Math.PI) *figurm;
+                TMPf = figurm;
+                TMPm = g.worldm[i];
             }
 
             public void reset(int x, int y, Figurentyp typ, bool white)
@@ -1116,8 +1179,12 @@ public bool pressedStartbutton()
                 position = new Vector2(x, y);
                 alive = true;
                 f = typ;
-                figurm = Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
+                figurm = Matrix.CreateScale(-0.12f) * Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
                 iswhite = white;
+                if (iswhite)
+                {
+                    figurm = Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                }
             }
 
             private void schlagen()
@@ -1134,53 +1201,84 @@ public bool pressedStartbutton()
                 if (Keyboard.GetState().IsKeyDown(Keys.D1))
                 {
                     f = Figurentyp.Turm;
-                    SetModel(g.turmm);
+                    if (iswhite)
+                        SetModel(g.turmmw);
+                    else
+                        SetModel(g.turmmb);
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D2))
                 {
                     f = Figurentyp.Springer;
-                    SetModel(g.turmm);
+                    if (iswhite)
+                        SetModel(g.springermw);
+                    else
+                        SetModel(g.springermb);
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D3))
                 {
                     f = Figurentyp.Laeufer;
-                    SetModel(g.turmm);
+                    if (iswhite)
+                        SetModel(g.laufermw);
+                    else
+                        SetModel(g.laufermb);
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D4))
                 {
                     f = Figurentyp.Queen;
-                    SetModel(g.turmm);
+                    if (iswhite)
+                        SetModel(g.queenmw);
+                    else
+                        SetModel(g.queenmb);
                 }
             }
 
 
             public void update(GameTime deltatime)
             {
-                
-                  if (moving)
-                  {
-                      if (movposition == destiny)
-                      {
-                          moving = false;
-                      }
-                      else
-                      {
-                          Vector3 direction = Vector3.Normalize(destiny - movposition)*0.1f;
-                          if ((destiny - movposition).Length() > destiny.Length())
-                          {
-                              movposition = movposition + direction;
-                          }
-                          else
-                          {
-                            movposition = destiny;
-                            if(opfer!=null)
-                            schlagen();
-                          }
-                      }
-                }
-                else
+                if (moving)
                 {
-                    //figurm= Matrix.CreateTranslation(new Vector3(raster(position), 0));
+                    float abstandx = TMPm.M41 - TMPf.M41;
+                    float abstandy = TMPm.M42 - TMPf.M42;
+                    // if (abstandx > 0)
+
+
+                    if (abstandx != 0 && Math.Abs(a) < Math.Abs(abstandx))
+                        a = a + 0.001f * Math.Sign(abstandx);
+                    if (abstandy != 0 && Math.Abs(b) < Math.Abs(abstandy))
+                        b = b + 0.001f * Math.Sign(abstandy);
+                    if (Math.Abs(a) < Math.Abs(abstandx) || Math.Abs(b) < Math.Abs(abstandy))
+                    {
+                        figurm = Matrix.CreateScale(TMPf.M33)
+                            * Matrix.CreateTranslation(new Vector3(TMPf.M41 + a, TMPf.M42 + b, 0));
+                        if (abstandy > 0 && abstandx == 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                        if (abstandy > 0 && abstandx < 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * (-0.75f)) * figurm;
+                        if (abstandy > 0 && abstandx > 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * 0.75f) * figurm;
+                        if (abstandy < 0 && abstandx < 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * (-0.25f)) * figurm;
+                        if (abstandy < 0 && abstandx > 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * 0.25f) * figurm;
+                        if (abstandy == 0 && abstandx < 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * (-0.5f)) * figurm;
+                        if (abstandy == 0 && abstandx > 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * 0.5f) * figurm;
+                        if (abstandy < 0 && abstandx == 0) { }
+                    }
+                    else
+                    {
+                        if (opfer != null)
+                            schlagen();
+                        figurm = Matrix.CreateScale(figurm.M33)
+                                  * Matrix.CreateTranslation(new Vector3(TMPm.M41, TMPm.M42, 0));
+                        figurm = Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                        //nicht_gedreht = true;
+                        moving = false;
+                        //BLOCKIERT = false;
+                        a = 0;
+                        b = 0;
+                    }
                 }
             }
 
