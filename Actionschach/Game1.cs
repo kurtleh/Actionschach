@@ -41,6 +41,8 @@ namespace Actionschach {
         Schachfigur select;
         Texture2D startButton;
         Texture2D skinButton;
+        Texture2D menueButton;
+        Texture2D resetButton;
         int d, e;
        static float zoom=45;
         static float zeit = 0;
@@ -138,10 +140,11 @@ namespace Actionschach {
 
 
         public Game1(){
-            graphics = new GraphicsDeviceManager(this);
-            /*{
+            graphics = new GraphicsDeviceManager(this)
+            {
                 PreferredBackBufferWidth = 1024,
-                PreferredBackBufferHeight = 720; };*/
+                PreferredBackBufferHeight = 720
+            };
             Content.RootDirectory = "Content";
             graphics.IsFullScreen = false;
          }
@@ -160,8 +163,8 @@ namespace Actionschach {
             figur[0] = new Schachfigur(0, 0, Figurentyp.Turm, true);
             figur[1] = new Schachfigur(1, 0, Figurentyp.Springer, true);
             figur[2] = new Schachfigur(2, 0, Figurentyp.Laeufer, true);
-            figur[3] = new Schachfigur(3, 0, Figurentyp.King, true);
-            figur[4] = new Schachfigur(4, 0, Figurentyp.Queen, true);
+            figur[3] = new Schachfigur(3, 0, Figurentyp.Queen, true);
+            figur[4] = new Schachfigur(4, 0, Figurentyp.King, true);
             figur[5] = new Schachfigur(5, 0, Figurentyp.Laeufer, true);
             figur[6] = new Schachfigur(6, 0, Figurentyp.Springer, true);
             figur[7] = new Schachfigur(7, 0, Figurentyp.Turm, true);
@@ -187,8 +190,8 @@ namespace Actionschach {
             MouseState state = Mouse.GetState();
             position.X = state.X;
             position.Y = state.Y;
-            if (position.X < 450 &&
-        position.X > 300 &&
+            if (position.X < 587 &&
+        position.X > 437 &&
         position.Y < 350 &&
         position.Y > 200 && click())
             {
@@ -203,10 +206,40 @@ public bool pressedStartbutton()
             MouseState state = Mouse.GetState();
             position.X = state.X;
             position.Y = state.Y;
-            if (position.X < 450  &&
-        position.X > 300 &&
+            if (position.X < 587  &&
+        position.X > 437 &&
         position.Y < 150 &&
         position.Y > 50 && click())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool pressedWinnerMenuebutton()
+        {
+            MouseState state = Mouse.GetState();
+            position.X = state.X;
+            position.Y = state.Y;
+            if (position.X < 331 &&
+        position.X > 181 &&
+        position.Y < 480 &&
+        position.Y > 380 && click())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool pressedWinnerResetbutton()
+        {
+            MouseState state = Mouse.GetState();
+            position.X = state.X;
+            position.Y = state.Y;
+            if (position.X < 843 &&
+        position.X > 693 &&
+        position.Y < 480 &&
+        position.Y > 380 && click())
             {
                 return true;
             }
@@ -218,6 +251,8 @@ public bool pressedStartbutton()
 
              startButton = this.Content.Load<Texture2D>("StartButton");
              skinButton = this.Content.Load<Texture2D>("SkinButton");
+            menueButton = this.Content.Load<Texture2D>("MenueButton");
+            resetButton = Content.Load<Texture2D>("StartButton");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             text = Content.Load<SpriteFont>("text");
@@ -237,8 +272,8 @@ public bool pressedStartbutton()
             MouseState state = Mouse.GetState();
             position.X = state.X;
             position.Y = state.Y;
-            if (position.X < 450 &&
-        position.X > 300 &&
+            if (position.X < 587 &&
+        position.X > 437 &&
         position.Y < 150 &&
         position.Y > 50 && click())
             {
@@ -291,6 +326,12 @@ public bool pressedStartbutton()
                     break;
                 case GameState.Skinmenu:
                     UpdateSkinMenu(gameTime);
+                    break;
+                case GameState.WhiteWinner:
+                    UpdateWhiteWinner(gameTime);
+                    break;
+                case GameState.BlackWinner:
+                    UpdateBlackWinner(gameTime);
                     break;
             }
             if (state.LeftButton == ButtonState.Pressed)    //für klicks
@@ -496,14 +537,14 @@ public bool pressedStartbutton()
             {
                 if (figur[i].possiblemove(figur[28].position, this))
                 {
-                    Ausgabe += "Schach für schwarzen Koenig";
+                    Ausgabe += "Schach für schwarzen Koenig\n";
                 }
             }
             for (int i = 16; i < 32; ++i)
             {
-                if (figur[i].possiblemove(figur[3].position, this))
+                if (figur[i].possiblemove(figur[4].position, this))
                 {
-                    Ausgabe += "Schach für weissen Koenig";
+                    Ausgabe += "Schach für weissen Koenig\n";
                 }
             }
         }
@@ -548,7 +589,24 @@ public bool pressedStartbutton()
                  _state = GameState.MainMenu;
          }
 
+        void UpdateWhiteWinner(GameTime deltaTime)
+        {
+            reset();
+            whiteturn = true;
+            if (pressedWinnerMenuebutton())
+                _state = GameState.MainMenu;
+            if (pressedWinnerResetbutton())
+                _state = GameState.Gameplay;
+        }
 
+        void UpdateBlackWinner(GameTime deltaTime)
+        {
+            reset();
+            if (pressedWinnerMenuebutton())
+                _state = GameState.MainMenu;
+            if (pressedWinnerResetbutton())
+                _state = GameState.Gameplay;
+        }
         /*
          * Tastatursteuerung etwas schwierig
          * Der registiriert immer zu viele Tastendrücke
@@ -631,7 +689,14 @@ public bool pressedStartbutton()
                 case GameState.Skinmenu:
                     DrawSkinMenu(gameTime);
                     break;
-            }             spriteBatch.Begin();
+                case GameState.BlackWinner:
+                    DrawBlackWinner(gameTime);
+                    break;
+                case GameState.WhiteWinner:
+                    DrawWhiteWinner(gameTime);
+                    break;
+            }
+            spriteBatch.Begin();
             spriteBatch.Draw(zeiger, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
@@ -639,8 +704,8 @@ public bool pressedStartbutton()
         void DrawMainMenu(GameTime deltaTime) { 
         
             spriteBatch.Begin();
-            spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
-            spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 200, 150, 100));
+            spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(437, 50, 150, 100));
+            spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(437, 200, 150, 100));
             spriteBatch.End();
 
         }
@@ -657,7 +722,21 @@ public bool pressedStartbutton()
 
         }
 
+        void DrawWhiteWinner(GameTime deltaTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(181, 380, 150, 100));
+            spriteBatch.Draw(resetButton, destinationRectangle: new Rectangle(693, 380, 150, 100));
+            spriteBatch.End();
+        }
 
+        void DrawBlackWinner(GameTime deltaTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(181, 380, 150, 100));
+            spriteBatch.Draw(resetButton, destinationRectangle: new Rectangle(693, 380, 150, 100));
+            spriteBatch.End();
+        }
 
         private void DrawModel(Model model_, Matrix world_, Matrix view_, Matrix projection_)
         {
@@ -673,12 +752,37 @@ public bool pressedStartbutton()
             }
         }
 
-
+        void reset()
+        {
+            figur[0].reset(0, 0, Figurentyp.Turm, true);
+            figur[1].reset(1, 0, Figurentyp.Springer, true);
+            figur[2].reset(2, 0, Figurentyp.Laeufer, true);
+            figur[3].reset(3, 0, Figurentyp.King, true);
+            figur[4].reset(4, 0, Figurentyp.Queen, true);
+            figur[5].reset(5, 0, Figurentyp.Laeufer, true);
+            figur[6].reset(6, 0, Figurentyp.Springer, true);
+            figur[7].reset(7, 0, Figurentyp.Turm, true);
+            for (int i = 0; i < 8; i++)
+            {
+                figur[i + 8].reset(i, 1, Figurentyp.Bauer, true);
+                figur[i + 16].reset(i, 6, Figurentyp.Bauer, false);
+            }
+            figur[24].reset(0, 7, Figurentyp.Turm, false);
+            figur[25].reset(1, 7, Figurentyp.Springer, false);
+            figur[26].reset(2, 7, Figurentyp.Laeufer, false);
+            figur[27].reset(3, 7, Figurentyp.King, false);
+            figur[28].reset(4, 7, Figurentyp.Queen, false);
+            figur[29].reset(5, 7, Figurentyp.Laeufer, false);
+            figur[30].reset(6, 7, Figurentyp.Springer, false);
+            figur[31].reset(7, 7, Figurentyp.Turm, false);
+            for (int i = 0; i < 32; i++)
+                figur[i].SetModel(turmm);
+        }
 
         void DrawSkinMenu(GameTime deltaTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
+            spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(437, 50, 150, 100));
             spriteBatch.End();
         }
 
@@ -834,7 +938,7 @@ public bool pressedStartbutton()
                                 {
                                     if (position.X == test.X)
                                     {
-                                        for (float i = Math.Min(position.Y, test.Y); i < Math.Max(position.Y, test.Y); i++)
+                                        for (float i = Math.Min(position.Y, test.Y)+1; i < Math.Max(position.Y, test.Y); i++)
                                         {
                                             if (g.wer(new Vector2(position.X, i)) >= 0)
                                                 return false;
@@ -843,7 +947,7 @@ public bool pressedStartbutton()
                                     }
                                     else
                                     {
-                                        for (float i = Math.Min(position.X, test.X); i < Math.Max(position.X, test.X); i++)
+                                        for (float i = Math.Min(position.X, test.X)+1; i < Math.Max(position.X, test.X); i++)
                                         {
                                             if (g.wer(new Vector2(i, test.Y)) >= 0)
                                                 return false;
@@ -934,7 +1038,7 @@ public bool pressedStartbutton()
                                 {
                                     if (position.X == test.X)
                                     {
-                                        for (float i = Math.Min(position.Y, test.Y); i < Math.Max(position.Y, test.Y); i++)
+                                        for (float i = Math.Min(position.Y, test.Y)+1; i < Math.Max(position.Y, test.Y); i++)
                                         {
                                             if (g.wer(new Vector2(position.X, i)) >= 0)
                                                 return false;
@@ -943,7 +1047,7 @@ public bool pressedStartbutton()
                                     }
                                     else
                                     {
-                                        for (float i = Math.Min(position.X, test.X); i < Math.Max(position.X, test.X); i++)
+                                        for (float i = Math.Min(position.X, test.X)+1; i < Math.Max(position.X, test.X); i++)
                                         {
                                             if (g.wer(new Vector2(i, test.Y)) >= 0)
                                                 return false;
@@ -993,12 +1097,12 @@ public bool pressedStartbutton()
                     if (iswhite)
                     {
                         if (g.wer(ziel) == 28)
-                            g.Ausgabe += "Schachmatt, weiß gewinnt";
+                            g._state = GameState.WhiteWinner;
                     }
                     else
                     {
-                        if (g.wer(ziel) == 3)
-                            g.Ausgabe += "Schachmatt, schwarz gewinnt";
+                        if (g.wer(ziel) == 4)
+                            g._state = GameState.BlackWinner;
                     }
                         opfer=g.figur[g.wer(ziel)];
                     }
