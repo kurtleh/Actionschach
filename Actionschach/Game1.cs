@@ -11,27 +11,52 @@ namespace Actionschach {
         MainMenu,
         Gameplay,
         Skinmenu,
+        WhiteWinner,
+        BlackWinner,
     }
 
+    public enum Team
+    {
+        blau,
+        rot
+    }
 
+    public enum Figurentyp
+    {
+        Bauer,
+        Turm,
+        Springer,
+        Laeufer,
+        Queen,
+        King
+    }
     public class Game1 : Game {
         GraphicsDeviceManager graphics; 
         SpriteBatch spriteBatch;
+        SpriteFont text;
+        Vector2 textposition;
         GameState _state;
         Vector2 position;
-        bool isselected;
+        public String Ausgabe="";
         Schachfigur select;
         Texture2D startButton;
         Texture2D skinButton;
+        Texture2D menueButton;
+        Texture2D resetButton;
+        Texture2D blauw;
+        Texture2D rotw;
+        bool BLOCKIERT=false;
         int d, e;
-       static float zoom=45;
+        float oben = 0, rechts = 0, schwenk = 0;
+        static float zoom = 27.7f;
+        bool nicht_gedreht = true;
+        bool geschwenkt = false;
         static float zeit = 0;
         static float zeit2 = 0;
         ButtonState lastmousestate;
+        bool whiteturn = true;
         //Camera
-        Vector3 camTarget;
         Vector3 camPosition =new Vector3(0, -1.6f, 1.25f);
-        Vector3 figurPos;
 
         //Camera empfindlichkeit
         float c = 0.3f;
@@ -48,7 +73,21 @@ namespace Actionschach {
         private Model brett; //scale=1
         private Matrix view;
 
-       
+        //Modelle
+        public Model bauermw;
+        public Model turmmw;
+        public Model springermw;
+        public Model laufermw;
+        public Model kingmw;
+        public Model queenmw;
+        public Model bauermb;
+        public Model turmmb;
+        public Model springermb;
+        public Model laufermb;
+        public Model kingmb;
+        public Model queenmb;
+        public Model umwelt;
+
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(zoom),2
            , 1f, 1000f);
@@ -65,10 +104,9 @@ namespace Actionschach {
         private Matrix[] worldm = new Matrix[64];
 
         //Raster
-        private Vector2 raster(int x, int y){
-            Vector2 tmp;
-            tmp.X = (-7 + 2 * x) * 0.1245f;
-            tmp.Y = (-7 + 2 * y) * 0.1245f;
+        public static Vector2 raster(Vector2 tmp){
+            tmp.X = (-7 + 2 * tmp.X) * 0.1245f;
+            tmp.Y = (-7 + 2 * tmp.Y) * 0.1245f;
             return tmp;
         }
 
@@ -103,7 +141,7 @@ namespace Actionschach {
         public bool belegt(Matrix m) {
             bool a = false;
             for (int i = 0; i < 32; i++) {
-                if (m == figur[i].figurm) { 
+                if (m.M41==figur[i].figurm.M41&&m.M42==figur[i].figurm.M42) { 
                 a = true;
                     itmp = i; //Nummer der Schachfigur auf belegtem feld
                 }
@@ -113,10 +151,11 @@ namespace Actionschach {
 
 
         public Game1(){
-            graphics = new GraphicsDeviceManager(this);
-            /*{
+            graphics = new GraphicsDeviceManager(this)
+            {
                 PreferredBackBufferWidth = 1024,
-                PreferredBackBufferHeight = 720; };*/
+                PreferredBackBufferHeight = 720
+            };
             Content.RootDirectory = "Content";
             graphics.IsFullScreen = false;
          }
@@ -127,43 +166,43 @@ namespace Actionschach {
             int k = 0; 
             for (int i = 0; i < 8; i++){
                 for (int j = 0; j < 8; j++){
-                    worldm[k] = Matrix.CreateTranslation(raster(j,i).X,raster(j,i).Y, 0);
+                    worldm[k] = Matrix.CreateScale(-0.9f) * Matrix.CreateTranslation(raster(new Vector2(j,i)).X,raster(new Vector2(j,i)).Y, 0);
                     k++;
                 }
             }
             //Startaufstellung
+            figur[0] = new Schachfigur(0, 0, Figurentyp.Turm, true,-0.12f);
+            figur[1] = new Schachfigur(1, 0, Figurentyp.Springer, true,-0.11f);
+            figur[2] = new Schachfigur(2, 0, Figurentyp.Laeufer, true,-0.18f);
+            figur[3] = new Schachfigur(3, 0, Figurentyp.Queen, true,-0.23f);
+            figur[4] = new Schachfigur(4, 0, Figurentyp.King, true,-0.19f);
+            figur[5] = new Schachfigur(5, 0, Figurentyp.Laeufer, true, -0.18f);
+            figur[6] = new Schachfigur(6, 0, Figurentyp.Springer, true, -0.11f);
+            figur[7] = new Schachfigur(7, 0, Figurentyp.Turm, true, -0.12f);
             for (int i = 0; i < 8; i++)
-
             {
-                figur[i]=new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i, 0).X, raster(i, 0).Y, 0)));
+                figur[i+8] =new Schachfigur(i,1, Figurentyp.Bauer,true,-0.15f);
+                figur[i+16] =new Schachfigur(i,6, Figurentyp.Bauer,false, -0.15f);
             }
-            for (int i = 8; i < 16; i++)
-            {
-                figur[i] =new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i - 8, 1).X, raster(i - 8, 1).Y, 0)));
-            }
+            figur[24] = new Schachfigur(0, 7, Figurentyp.Turm, false, -0.12f);
+            figur[25] = new Schachfigur(1, 7, Figurentyp.Springer, false, -0.11f);
+            figur[26] = new Schachfigur(2, 7, Figurentyp.Laeufer, false, -0.23f);
+            figur[27] = new Schachfigur(3, 7, Figurentyp.Queen, false, -0.23f);
+            figur[28] = new Schachfigur(4, 7, Figurentyp.King, false, -0.19f);
+            figur[29] = new Schachfigur(5, 7, Figurentyp.Laeufer, false, -0.18f);
+            figur[30] = new Schachfigur(6, 7, Figurentyp.Springer, false, -0.11f);
+            figur[31] = new Schachfigur(7, 7, Figurentyp.Turm, false, -0.12f);
 
 
-        
-
-  for (int i = 16; i < 24; i++)
-            {
-                figur[i] =new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i - 16, 6).X, raster(i - 16, 6).Y, 0)));
-            }
-              for (int i = 24; i < 32; i++)
-            {
-                figur[i] =new Schachfigur(Matrix.CreateTranslation(new Vector3(raster(i - 24, 7).X, raster(i - 24, 7).Y, 0)));
-            }
-
-
-         base.Initialize();
+            base.Initialize();
         }
         public bool pressedSkinbutton()
         {
             MouseState state = Mouse.GetState();
             position.X = state.X;
             position.Y = state.Y;
-            if (position.X < 450 &&
-        position.X > 300 &&
+            if (position.X < 587 &&
+        position.X > 437 &&
         position.Y < 350 &&
         position.Y > 200 && click())
             {
@@ -178,10 +217,40 @@ public bool pressedStartbutton()
             MouseState state = Mouse.GetState();
             position.X = state.X;
             position.Y = state.Y;
-            if (position.X < 450  &&
-        position.X > 300 &&
+            if (position.X < 587  &&
+        position.X > 437 &&
         position.Y < 150 &&
         position.Y > 50 && click())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool pressedWinnerMenuebutton()
+        {
+            MouseState state = Mouse.GetState();
+            position.X = state.X;
+            position.Y = state.Y;
+            if (position.X < 331 &&
+        position.X > 181 &&
+        position.Y < 480 &&
+        position.Y > 380 && click())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool pressedWinnerResetbutton()
+        {
+            MouseState state = Mouse.GetState();
+            position.X = state.X;
+            position.Y = state.Y;
+            if (position.X < 843 &&
+        position.X > 693 &&
+        position.Y < 480 &&
+        position.Y > 380 && click())
             {
                 return true;
             }
@@ -193,15 +262,50 @@ public bool pressedStartbutton()
 
              startButton = this.Content.Load<Texture2D>("StartButton");
              skinButton = this.Content.Load<Texture2D>("SkinButton");
+            menueButton = this.Content.Load<Texture2D>("MenueButton");
+            resetButton = Content.Load<Texture2D>("ResetButton");
+            rotw = Content.Load<Texture2D>("RotWinner");
+            blauw = Content.Load<Texture2D>("BlauWinner");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            text = Content.Load<SpriteFont>("text");
+            textposition = new Vector2(0, 0);
 
             brett = Content.Load<Model>("chessboard");
+            turmmw = Content.Load<Model>("turmblau");
+            turmmb = Content.Load<Model>("turmrot");
+            bauermw = Content.Load<Model>("bauerblau");
+            bauermb = Content.Load<Model>("bauerrot");
+            springermw = Content.Load<Model>("springerblau");
+            springermb = Content.Load<Model>("springerrot");
+            laufermw = Content.Load<Model>("lauferblau");
+            laufermb = Content.Load<Model>("lauferrot");
+            queenmw = Content.Load<Model>("dameblau");
+            queenmb = Content.Load<Model>("damerot");
+            kingmw = Content.Load<Model>("konigblau");
+            kingmb = Content.Load<Model>("konigrot");
+            umwelt = Content.Load<Model>("Land");
 
-            for (int i = 0; i < 32; i++)
-                figur[i].SetModel(Content.Load<Model>("turmneu"));
-
+            for (int i = 8; i < 16; i++)
+                figur[i].SetModel(bauermw);
+            for (int i = 16; i < 24; i++)
+                figur[i].SetModel(bauermb);
+            figur[0].SetModel(turmmw);
+            figur[1].SetModel(springermw);
+            figur[2].SetModel(laufermw);
+            figur[3].SetModel(queenmw);
+            figur[4].SetModel(kingmw);
+            figur[5].SetModel(laufermw);
+            figur[6].SetModel(springermw);
+            figur[7].SetModel(turmmw);
+            figur[24].SetModel(turmmb);
+            figur[25].SetModel(springermb);
+            figur[26].SetModel(laufermb);
+            figur[27].SetModel(queenmb);
+            figur[28].SetModel(kingmb);
+            figur[29].SetModel(laufermb);
+            figur[30].SetModel(springermb);
+            figur[31].SetModel(turmmb);
             maus = Content.Load<Model>("kugel");
             zeiger = Content.Load<Texture2D>("Cursor"); }
 
@@ -210,8 +314,8 @@ public bool pressedStartbutton()
             MouseState state = Mouse.GetState();
             position.X = state.X;
             position.Y = state.Y;
-            if (position.X < 450 &&
-        position.X > 300 &&
+            if (position.X < 587 &&
+        position.X > 437 &&
         position.Y < 150 &&
         position.Y > 50 && click())
             {
@@ -265,6 +369,12 @@ public bool pressedStartbutton()
                 case GameState.Skinmenu:
                     UpdateSkinMenu(gameTime);
                     break;
+                case GameState.WhiteWinner:
+                    UpdateWhiteWinner(gameTime);
+                    break;
+                case GameState.BlackWinner:
+                    UpdateBlackWinner(gameTime);
+                    break;
             }
             if (state.LeftButton == ButtonState.Pressed)    //für klicks
             {
@@ -279,43 +389,35 @@ public bool pressedStartbutton()
 
                 void UpdateGameplay(GameTime deltaTime)
                 {
+
+
             //Kamerasteuerung
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))  
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                camPosition = Vector3.Normalize(camPosition + c*Vector3.Normalize(Vector3.Cross(new Vector3(0, 0, 2), camPosition))) * camPosition.Length();
+                if (rechts > -2.02f)
+                    rechts -= 0.01f;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                camPosition = Vector3.Normalize(camPosition - c*Vector3.Normalize(Vector3.Cross(new Vector3(0, 0, 2), camPosition))) * camPosition.Length();
+                if (rechts < 2.02f)
+                    rechts += 0.01f;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+
+            if (!geschwenkt)
             {
-                if (camPosition.X == 0 && camPosition.Y == 0)
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 {
-                    camPosition = Vector3.Normalize(camPosition - (c*new Vector3(0, 0, 2))) * camPosition.Length();
+                    if (oben < 1f)
+                        oben += 0.01f;
                 }
-                else
+                if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
-                    camPosition = Vector3.Normalize(camPosition - (c*new Vector3(0, 0, 2))) * camPosition.Length();
+                    if (oben > -1.68f)
+                        oben -= 0.01f;
+
                 }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                camPosition = Vector3.Normalize(camPosition + c*(new Vector3(0, 0, 2))) * camPosition.Length();
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))    //Standard Kameraposition
-            {
-                camPosition.X = 0;
-                camPosition.Y = -1.6f; 
-                camPosition.Z = 1.25f;
-            }
-            if (camPosition.Z < 0f)          //Grenze fürs Ranzoomen
-            {
-                float t = camPosition.Length();
-                camPosition.Z = 0f;
-                camPosition = Vector3.Normalize(camPosition) * t;
-            }
-            view = Matrix.CreateLookAt(camPosition, new Vector3(0, -0.28f, 0), Vector3.UnitY);
+            view = Matrix.CreateLookAt(new Vector3(rechts, -2.56f + oben + schwenk, 1.38f + schwenk), new Vector3(rechts, -0.28f, 0.11f + oben), Vector3.UnitY);
 
             //immer aufm Boden bleiben
             for (int i = 0; i < 32; i++)
@@ -356,27 +458,57 @@ public bool pressedStartbutton()
             //<Maus>
             Maus = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             Viewport viewport = this.GraphicsDevice.Viewport;
-            if (!klick)
+            if (whiteturn)
             {
-                for (int i = 0; i < 64; i++)
+                if (!klick)
                 {
-                    if (Intersects(Maus, maus, worldm[i], view, projection, viewport) && belegt(worldm[i]))
+                    for (int i = 0; i < 64; i++)
                     {
-                        figur[itmp].figurm.M43 = 0.1f;
-                        Console.WriteLine(itmp);
-                        if (click())
+                        if (Intersects(Maus, maus, worldm[i], view, projection, viewport) && belegt(worldm[i]))
                         {
-                            klick = true;
+                            if (figur[itmp].iswhite) { 
+                            figur[itmp].figurm.M43 = 0.1f;
+                            //Console.WriteLine(itmp);
+                            if (click())
+                            {
+                                klick = true;
+                            }
                         }
                     }
+                    }
+                }
+                else
+                {
+                    figur[itmp].figurm.M43 = 0.2f;
+                    figur[itmp].figurm = Matrix.CreateRotationZ((float)deltaTime.ElapsedGameTime.TotalSeconds) * figur[itmp].figurm;
                 }
             }
             else
             {
-                figur[itmp].figurm.M43 = 0.2f;
-                figur[itmp].figurm = Matrix.CreateRotationZ((float)deltaTime.ElapsedGameTime.TotalSeconds) * figur[itmp].figurm;
+                if (!klick)
+                {
+                    for (int i = 0; i < 64; i++)
+                    {
+                        if (Intersects(Maus, maus, worldm[i], view, projection, viewport) && belegt(worldm[i]))
+                        {
+                            if (!figur[itmp].iswhite)
+                            {
+                                figur[itmp].figurm.M43 = 0.1f;
+                                Console.WriteLine(itmp);
+                                if (click())
+                                {
+                                    klick = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    figur[itmp].figurm.M43 = 0.2f;
+                    figur[itmp].figurm = Matrix.CreateRotationZ((float)deltaTime.ElapsedGameTime.TotalSeconds) * figur[itmp].figurm;
+                }
             }
-
             if (klick && Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 wartemal++;
@@ -393,26 +525,58 @@ public bool pressedStartbutton()
                 if (klick && Intersects(Maus, maus, worldm[i], view, projection, viewport)
                 && Mouse.GetState().RightButton == ButtonState.Pressed && !besetzt(worldm[i]))
                 {
-                    figur[itmp].figurm = Matrix.CreateScale(figur[itmp].figurm.M33) * Matrix.CreateTranslation(new Vector3(worldm[i].M41, worldm[i].M42, 0));
+                    if(figur[itmp].possiblemove(feld(i),this)){
+                        figur[itmp].move(feld(i), this, i);
                     klick = false;
                     itmp = -1;
                     zugErfolgt = true;
+                        whiteturn = !whiteturn;
+                }
                 }
             }//</Maus>
 
-            //nach jedem Zug soll die komplette welt um 180grd gedreht werden
-            /*  irgendwie so oder auch nicht:
-             *  if (zugErfolgt) {
-              float t= (float)gameTime.ElapsedGameTime.TotalMinutes;
-                  float t1 = (float)gameTime.TotalGameTime.TotalMinutes+(float)Math.PI;
-                  if (t<t1)
-                  for (int i=0;i<32;i++)
-                      worldf[i] = worldf[i] * Matrix.CreateRotationZ((float)gameTime.ElapsedGameTime.TotalMinutes);
+            if (zugErfolgt && !BLOCKIERT)
+            {
+                for (int i = 0; i < 32; i++)
+                    figur[i].figurm = figur[i].figurm * Matrix.CreateRotationZ((float)Math.PI);
+                for (int i = 0; i <= 63; i++)
+                {
+                    worldm[i] = worldm[i] * Matrix.CreateRotationZ((float)Math.PI);
+                }
+                world = world * Matrix.CreateRotationZ((float)Math.PI);
+                zugErfolgt = false;
+            }
 
-                  worldf[5]=worldf[5]*Matrix.CreateRotationZ((float)Math.PI);
-                  zugErfolgt = false;
-              }
-              */
+            for (int i = 8; i < 16; i++)
+            {
+                if (figur[i].position.Y == 7)
+                    figur[i].bauerntausch(this);
+            }
+            for (int i = 16; i < 24; i++)
+            {
+                if (figur[i].position.Y == 0)
+                    figur[i].bauerntausch(this);
+            }
+            for (int i=0;i<32; i++)
+            {
+                figur[i].update(deltaTime, this);
+            }
+
+            Ausgabe = "";
+            for(int i=0;i<16; ++i)
+            {
+                if (figur[i].possiblemove(figur[28].position, this))
+                {
+                    Ausgabe += "Schach für schwarzen Koenig\n";
+                }
+            }
+            for (int i = 16; i < 32; ++i)
+            {
+                if (figur[i].possiblemove(figur[4].position, this))
+                {
+                    Ausgabe += "Schach für weissen Koenig\n";
+                }
+            }
         }
 
         /*  public void figurselection(GameTime deltaTime)
@@ -455,7 +619,24 @@ public bool pressedStartbutton()
                  _state = GameState.MainMenu;
          }
 
+        void UpdateWhiteWinner(GameTime deltaTime)
+        {
+            reset();
+            whiteturn = true;
+            if (pressedWinnerMenuebutton())
+                _state = GameState.MainMenu;
+            if (pressedWinnerResetbutton())
+                _state = GameState.Gameplay;
+        }
 
+        void UpdateBlackWinner(GameTime deltaTime)
+        {
+            reset();
+            if (pressedWinnerMenuebutton())
+                _state = GameState.MainMenu;
+            if (pressedWinnerResetbutton())
+                _state = GameState.Gameplay;
+        }
         /*
          * Tastatursteuerung etwas schwierig
          * Der registiriert immer zu viele Tastendrücke
@@ -522,7 +703,7 @@ public bool pressedStartbutton()
 
 
         protected override void Draw(GameTime gameTime) {
-            graphics.GraphicsDevice.Clear(Color.DeepSkyBlue);
+            graphics.GraphicsDevice.Clear(Color.White);
             
 
             base.Draw(gameTime);
@@ -538,7 +719,14 @@ public bool pressedStartbutton()
                 case GameState.Skinmenu:
                     DrawSkinMenu(gameTime);
                     break;
-            }             spriteBatch.Begin();
+                case GameState.BlackWinner:
+                    DrawBlackWinner(gameTime);
+                    break;
+                case GameState.WhiteWinner:
+                    DrawWhiteWinner(gameTime);
+                    break;
+            }
+            spriteBatch.Begin();
             spriteBatch.Draw(zeiger, position, origin: new Vector2(0, 0));
             spriteBatch.End();
         }
@@ -546,8 +734,8 @@ public bool pressedStartbutton()
         void DrawMainMenu(GameTime deltaTime) { 
         
             spriteBatch.Begin();
-            spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
-            spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 200, 150, 100));
+            spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(437, 50, 150, 100));
+            spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(437, 200, 150, 100));
             spriteBatch.End();
 
         }
@@ -556,11 +744,32 @@ public bool pressedStartbutton()
         {
             graphics.GraphicsDevice.Clear(Color.DeepSkyBlue);
             DrawModel(brett, world, view, projection);
+            DrawModel(umwelt, Matrix.CreateScale(-0.5f)*world, view, projection);
             for (int i = 0; i < 32; i++)
                 figur[i].draw(view, projection);
+            spriteBatch.Begin();
+            spriteBatch.DrawString(text, Ausgabe, textposition, Color.Black);
+            spriteBatch.End();
+
         }
 
+        void DrawWhiteWinner(GameTime deltaTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(blauw,destinationRectangle: new Rectangle(350, 100, 300, 200));
+            //spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(181, 380, 150, 100));
+            //spriteBatch.Draw(resetButton, destinationRectangle: new Rectangle(693, 380, 150, 100));
+            spriteBatch.End();
+        }
 
+        void DrawBlackWinner(GameTime deltaTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(rotw, destinationRectangle: new Rectangle(350, 100, 300, 200));
+            //spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(181, 380, 150, 100));
+            //spriteBatch.Draw(resetButton, destinationRectangle: new Rectangle(693, 380, 150, 100));
+            spriteBatch.End();
+        }
 
         private void DrawModel(Model model_, Matrix world_, Matrix view_, Matrix projection_)
         {
@@ -576,12 +785,56 @@ public bool pressedStartbutton()
             }
         }
 
-
+        void reset()
+        {
+            BLOCKIERT = false;
+            figur[0].reset(0, 0, Figurentyp.Turm, true);
+            figur[1].reset(1, 0, Figurentyp.Springer, true);
+            figur[2].reset(2, 0, Figurentyp.Laeufer, true);
+            figur[3].reset(3, 0, Figurentyp.King, true);
+            figur[4].reset(4, 0, Figurentyp.Queen, true);
+            figur[5].reset(5, 0, Figurentyp.Laeufer, true);
+            figur[6].reset(6, 0, Figurentyp.Springer, true);
+            figur[7].reset(7, 0, Figurentyp.Turm, true);
+            for (int i = 0; i < 8; i++)
+            {
+                figur[i + 8].reset(i, 1, Figurentyp.Bauer, true);
+                figur[i + 16].reset(i, 6, Figurentyp.Bauer, false);
+            }
+            figur[24].reset(0, 7, Figurentyp.Turm, false);
+            figur[25].reset(1, 7, Figurentyp.Springer, false);
+            figur[26].reset(2, 7, Figurentyp.Laeufer, false);
+            figur[27].reset(3, 7, Figurentyp.King, false);
+            figur[28].reset(4, 7, Figurentyp.Queen, false);
+            figur[29].reset(5, 7, Figurentyp.Laeufer, false);
+            figur[30].reset(6, 7, Figurentyp.Springer, false);
+            figur[31].reset(7, 7, Figurentyp.Turm, false);
+            for (int i = 8; i < 16; i++)
+                figur[i].SetModel(bauermw);
+            for (int i = 16; i < 24; i++)
+                figur[i].SetModel(bauermb);
+            figur[0].SetModel(turmmw);
+            figur[1].SetModel(springermw);
+            figur[2].SetModel(laufermw);
+            figur[3].SetModel(queenmw);
+            figur[4].SetModel(kingmw);
+            figur[5].SetModel(laufermw);
+            figur[6].SetModel(springermw);
+            figur[7].SetModel(turmmw);
+            figur[24].SetModel(turmmb);
+            figur[25].SetModel(springermb);
+            figur[26].SetModel(laufermb);
+            figur[27].SetModel(queenmb);
+            figur[28].SetModel(kingmb);
+            figur[29].SetModel(laufermb);
+            figur[30].SetModel(springermb);
+            figur[31].SetModel(turmmb);
+        }
 
         void DrawSkinMenu(GameTime deltaTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(300, 50, 150, 100));
+            spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(437, 50, 150, 100));
             spriteBatch.End();
         }
 
@@ -605,25 +858,60 @@ public bool pressedStartbutton()
             return new Vector3(-((spalte-4)*schritt-2), -((zeile - 4) * schritt-2),0);
         }
 
+        public int wer(Vector2 pos)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                if (figur[i].position == pos && figur[i].alive)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
-
-
+        //gibt position des Feldes zurück im Bezug auf Schachbrett, erhält id der worldm
+        public Vector2 feld(int ri)
+        {
+            return new Vector2(ri % 8, ri / 8);
+        }
+        
 
         public class Schachfigur
         {
-            public Vector3 position;
+            public Vector2 position;
             private Vector3 destiny;
-            private bool moving;
+            public bool moving;
             Model m;
-            bool alive;
+            public bool alive;
             public Matrix figurm;
+            private Figurentyp f;
+            private Vector3 movposition;
+            public bool iswhite;
+            Schachfigur opfer = null;
+            Matrix TMPf;
+            Matrix TMPm;
+            float a=0;
+            float b=0;
+            float scale;
 
-            public Schachfigur(Matrix model)
-            { figurm = model; }
+            public Schachfigur(int x,int y,Figurentyp typ,bool white,float scale)
+            {
+                position = new Vector2(x, y);
+                alive = true;
+                f = typ;
+                this.scale = scale;
+                figurm= Matrix.CreateScale(scale) * Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
+                iswhite = white;
+                if (iswhite)
+                {
+                    figurm= Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                }
+            }
 
             public Matrix getPosition()
             {
-                return Matrix.CreateWorld(this.position, Vector3.Forward, Vector3.Up);
+                return figurm;
             }
 
             public void SetModel(Model model)
@@ -636,47 +924,391 @@ public bool pressedStartbutton()
                 return m;
             }
 
-            public void move(Vector3 ziel)
+            public bool isEnemy(bool other)
             {
-                destiny = ziel;
-                moving = true;
+                return iswhite != other;
             }
 
-            public void update(GameTime deltatime)
+            public bool possiblemove(Vector2 test, Game1 g)
             {
-                if (moving)
+                if (test.X < 0 || test.X > 7 || test.Y < 0 || test.Y > 7)
+                    return false;
+                int fi = g.wer(test);
+                switch (f)
                 {
-                    if (position == destiny)
-                    {
-                        moving = false;
-                    }
-                    else
-                    {
-                        Vector3 direction = Vector3.Normalize(destiny - position);
-                        if ((destiny - position).Length() > destiny.Length())
+                    case Figurentyp.Bauer:
+                        if (iswhite)
                         {
-                            position = position + direction;
+                            if (test.Y - position.Y == 1 && position.X == test.X && fi < 0)
+                                return true;
+                            else
+                            {
+                                if (position.Y == 1 && test.Y - position.Y == 2 && position.X==test.X && fi < 0)
+                                    if(g.wer(new Vector2(test.X,2))<0)
+                                    return true;
+                            {
+                                    if (test.Y - position.Y == 1 && Math.Abs(test.X - position.X) == 1 && fi>=0 && g.figur[fi].isEnemy(iswhite))
+                                        return true;
+                                }
+                            }
+                            return false;
                         }
                         else
                         {
-                            position = destiny;
+                            if (test.Y - position.Y == -1 && position.X == test.X && fi < 0)
+                                return true;
+                            else
+                            {
+                                if (position.Y == 6 && test.Y - position.Y == -2 && position.X == test.X && fi < 0)
+                                    if (g.wer(new Vector2(test.X, 5)) < 0)
+                                        return true;
+                                
+                                {
+                                    if (test.Y - position.Y == -1 && Math.Abs(test.X - position.X) == 1 && fi >= 0 && g.figur[fi].isEnemy(iswhite))
+                                        return true;
+                                }
+                            }
+                            return false;
                         }
+                    case Figurentyp.Turm:
+                        if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi<0)
+                        {
+                            if (position.X == test.X)
+                            {
+                                for(float i=Math.Min(position.Y,test.Y)+1;i<Math.Max(position.Y, test.Y); i++)
+                                {
+                                    if (g.wer(new Vector2(position.X, i)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
+                            else
+                            {
+                                for (float i = Math.Min(position.X, test.X)+1; i < Math.Max(position.X, test.X); i++)
+                                {
+                                    if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi >= 0)
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                {
+                                    if (position.X == test.X)
+                                    {
+                                        for (float i = Math.Min(position.Y, test.Y)+1; i < Math.Max(position.Y, test.Y); i++)
+                                        {
+                                            if (g.wer(new Vector2(position.X, i)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        for (float i = Math.Min(position.X, test.X)+1; i < Math.Max(position.X, test.X); i++)
+                                        {
+                                            if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        return false;
+                    case Figurentyp.Laeufer:
+                        if (Math.Abs(position.X - test.X) == Math.Abs(position.Y - test.Y))
+                        {
+                            Vector2 p = new Vector2(position.X,position.Y);
+                            while (!p.Equals(test))
+                            {
+                                if (position.X < test.X)
+                                    p.X += 1;
+                                else
+                                    p.X -= 1;
+                                if (position.Y < test.Y)
+                                    p.Y += 1;
+                                else
+                                    p.Y -= 1;
+                                if (g.wer(p) >= 0)
+                                {
+                                    if (p.Equals(test))
+                                    {
+                                        if (fi >= 0 && g.figur[fi].isEnemy(iswhite))
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                            }return true;
+                        }
+                        return false;
+                    case Figurentyp.Springer:
+                        if(Math.Abs(Math.Abs(position.X-test.X)-Math.Abs(position.Y-test.Y))==1 && Math.Abs(position.X-test.X)<3 && Math.Abs(position.Y - test.Y) < 3)
+                        {
+                            if (fi < 0)
+                                return true;
+                            else
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                    return true;
+                            }
+                        }
+                        return false;
+                    case Figurentyp.King:
+                        if(Math.Abs(position.X-test.X)<2 && Math.Abs(position.Y - test.Y) < 2)
+                        {
+                            if (fi < 0)
+                                return true;
+                            else
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                    return true;
+                            }
+                        }
+                        return false;
+                    case Figurentyp.Queen:
+                        if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi < 0)
+                        {
+                            if (position.X == test.X)
+                            {
+                                for (float i = Math.Min(position.Y, test.Y)+1; i < Math.Max(position.Y, test.Y); i++)
+                                {
+                                    if (g.wer(new Vector2(position.X, i)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
+                            else
+                            {
+                                for (float i = Math.Min(position.X, test.X)+1; i < Math.Max(position.X, test.X); i++)
+                                {
+                                    if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                        return false;
+                                }
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if (((position.X == test.X && position.Y != test.Y) || (position.X != test.X && position.Y == test.Y)) && fi >= 0)
+                            {
+                                if (g.figur[fi].isEnemy(iswhite))
+                                {
+                                    if (position.X == test.X)
+                                    {
+                                        for (float i = Math.Min(position.Y, test.Y)+1; i < Math.Max(position.Y, test.Y); i++)
+                                        {
+                                            if (g.wer(new Vector2(position.X, i)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        for (float i = Math.Min(position.X, test.X)+1; i < Math.Max(position.X, test.X); i++)
+                                        {
+                                            if (g.wer(new Vector2(i, test.Y)) >= 0)
+                                                return false;
+                                        }
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        if (Math.Abs(position.X - test.X) == Math.Abs(position.Y - test.Y))
+                        {
+                            Vector2 p = new Vector2(position.X, position.Y);
+                            while (!p.Equals(test))
+                            {
+                                if (position.X < test.X)
+                                    p.X += 1;
+                                else
+                                    p.X -= 1;
+                                if (position.Y < test.Y)
+                                    p.Y += 1;
+                                else
+                                    p.Y -= 1;
+                                if (g.wer(p) >= 0)
+                                {
+                                    if (p.Equals(test))
+                                    {
+                                        if (fi >= 0 && g.figur[fi].isEnemy(iswhite))
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                            }return true;
+                        }
+                        return false;
+                }
+                return false;
+            }
+
+            public void move(Vector2 ziel, Game1 g,int i)
+            {
+                   movposition = new Vector3(raster(position), 0);
+                    destiny.X = raster(ziel).X;
+                    destiny.Y = raster(ziel).Y;
+                    destiny.Z = 0;
+                    moving = true;
+                
+                    if (g.wer(ziel) >= 0) {
+                    if (iswhite)
+                    {
+                        if (g.wer(ziel) == 28)
+                            g._state = GameState.WhiteWinner;
+                    }
+                    else
+                    {
+                        if (g.wer(ziel) == 4)
+                            g._state = GameState.BlackWinner;
+                    }
+                        opfer=g.figur[g.wer(ziel)];
+                    }
+                    position = ziel;
+                g.BLOCKIERT = true;
+                TMPf = figurm;
+                TMPm = g.worldm[i];
+                //figurm = Matrix.CreateScale(figurm.M33)* Matrix.CreateTranslation(new Vector3(g.worldm[i].M41, g.worldm[i].M42, 0));
+                //figurm = Matrix.CreateRotationZ((float)Math.PI) *figurm;
+                
+            }
+
+            public void reset(int x, int y, Figurentyp typ, bool white)
+            {
+                moving = false;
+                position = new Vector2(x, y);
+                alive = true;
+                f = typ;
+                figurm = Matrix.CreateScale(scale) * Matrix.CreateTranslation(new Vector3(raster(new Vector2(x, y)), 0));
+                iswhite = white;
+                if (iswhite)
+                {
+                    figurm = Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                }
+            }
+
+            private void schlagen()
+            {
+                opfer.alive = false;
+                opfer.position=new Vector2(-1,-1);
+                opfer.figurm= Matrix.CreateWorld(new Vector3(100,100,100), Vector3.Forward, Vector3.Up);
+                opfer = null;
+            }
+
+            public void bauerntausch(Game1 g)
+            {
+                g.Ausgabe += "Ein Bauer hat die hintere Linie erreicht,\nwelche Form soll er annehmen?\nTurm(1),Springer(2),Lauufer(3),Dame(4)\n";
+                if (Keyboard.GetState().IsKeyDown(Keys.D1))
+                {
+                    figurm = Matrix.CreateScale(-0.12f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                    f = Figurentyp.Turm;
+                    if (iswhite)
+                        SetModel(g.turmmw);
+                    else
+                        SetModel(g.turmmb);
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D2))
+                {
+                    figurm = Matrix.CreateScale(-0.11f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                    f = Figurentyp.Springer;
+                    if (iswhite)
+                        SetModel(g.springermw);
+                    else
+                        SetModel(g.springermb);
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D3))
+                {
+                    figurm = Matrix.CreateScale(-0.18f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                    f = Figurentyp.Laeufer;
+                    if (iswhite)
+                        SetModel(g.laufermw);
+                    else
+                        SetModel(g.laufermb);
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D4))
+                {
+                    figurm = Matrix.CreateScale(-0.23f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                    f = Figurentyp.Queen;
+                    if (iswhite)
+                        SetModel(g.queenmw);
+                    else
+                        SetModel(g.queenmb);
+                }
+            }
+
+
+            public void update(GameTime deltatime,Game1 g)
+            {
+                if (moving)
+                {
+                    float abstandx = TMPm.M41 - TMPf.M41;
+                    float abstandy = TMPm.M42 - TMPf.M42;
+                    // if (abstandx > 0)
+
+
+                    if (abstandx != 0 && Math.Abs(a) < Math.Abs(abstandx))
+                        a = a + 0.01f * Math.Sign(abstandx);
+                    if (abstandy != 0 && Math.Abs(b) < Math.Abs(abstandy))
+                        b = b + 0.01f * Math.Sign(abstandy);
+                    if (Math.Abs(a) < Math.Abs(abstandx) || Math.Abs(b) < Math.Abs(abstandy))
+                    {
+                        if (Keyboard.GetState().IsKeyDown(Keys.T))
+                        {
+
+                        }
+                        figurm = Matrix.CreateScale(figurm.M33)*Matrix.CreateTranslation(new Vector3(TMPf.M41 + a, TMPf.M42 + b, 0));
+                        if (abstandy > 0 && abstandx == 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                        if (abstandy > 0 && abstandx < 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * (-0.75f)) * figurm;
+                        if (abstandy > 0 && abstandx > 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * 0.75f) * figurm;
+                        if (abstandy < 0 && abstandx < 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * (-0.25f)) * figurm;
+                        if (abstandy < 0 && abstandx > 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * 0.25f) * figurm;
+                        if (abstandy == 0 && abstandx < 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * (-0.5f)) * figurm;
+                        if (abstandy == 0 && abstandx > 0)
+                            figurm = Matrix.CreateRotationZ((float)Math.PI * 0.5f) * figurm;
+                        if (abstandy < 0 && abstandx == 0) { }
+                    }
+                    else
+                    {
+                        if (opfer != null)
+                            schlagen();
+                        figurm = Matrix.CreateScale(figurm.M33) * Matrix.CreateTranslation(new Vector3(TMPm.M41, TMPm.M42, 0));
+                        figurm = Matrix.CreateRotationZ((float)Math.PI) * figurm;
+                        //nicht_gedreht = true;
+                        moving = false;
+                        g.BLOCKIERT = false;
+                        a = 0;
+                        b = 0;
                     }
                 }
             }
 
-            public void draw(Matrix viewMatrix,Matrix projectionMatrix)
+            public void draw(Matrix viewMatrix, Matrix projectionMatrix)
             {
-                foreach (ModelMesh mesh in m.Meshes)
+                if (alive)
                 {
-                    foreach (BasicEffect effect in mesh.Effects)
-                    {
-                        effect.World = figurm;
-                        effect.View = viewMatrix;
-                        effect.Projection = projectionMatrix;
+                    
+                        foreach (ModelMesh mesh in m.Meshes)
+                        {
+                            foreach (BasicEffect effect in mesh.Effects)
+                            {
+                                effect.World = figurm;
+                                effect.View = viewMatrix;
+                                effect.Projection = projectionMatrix;
+                            }
+                            mesh.Draw();
+                        }
                     }
-                    mesh.Draw();
-                }
             }            
         }
 

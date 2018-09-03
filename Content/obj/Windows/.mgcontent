@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bauerblau.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bauergrun.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bauerrot.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/dameblau.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/damegrun.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/damerot.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/helmTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/kettenhemdTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/konigblau.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/koniggrun.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/konigrot.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/kroneTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/land.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/lauferblau.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/laufergrun.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/lauferrot.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/metallTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/pferd2Textur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/pferdTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/rustungTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/schwertTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/springerblau.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/springergrun.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/springerrot.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/stoffTextur.JPG</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmblau.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmgrun.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmrot.x</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmTextur2.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmTextur3.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/wappen2Textur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/wappen3Textur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/wappenTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/File.spritefont</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/blatterTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/boden_.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/hintergrund.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/rindeTextur.jpg</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/BlauWinner.png</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/MenueButton.png</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/ResetButton.png</File>
+    <File>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/RotWinner.png</File>
+  </SourceFiles>
+</SourceFileCollection>
