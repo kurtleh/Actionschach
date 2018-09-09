@@ -173,3 +173,7 @@ C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Deb
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\DSCN1021_0.xnb
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\hintergrund_0.xnb
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\rindeTextur_0.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\BlauvsGrun.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\BlauvsRot.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\GrunvsRot.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\GrunWinner.xnb

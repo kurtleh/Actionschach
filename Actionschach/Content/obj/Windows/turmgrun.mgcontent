@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/turmgrun.x</SourceFile>
-  <SourceTime>2018-08-04T04:10:56+02:00</SourceTime>
+  <SourceTime>2018-09-09T18:18:53.2281667+02:00</SourceTime>
   <DestFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bin/Windows/turmgrun.xnb</DestFile>
-  <DestTime>2018-09-03T18:08:48.1390048+02:00</DestTime>
+  <DestTime>2018-09-09T18:53:05.8566223+02:00</DestTime>
   <Importer>XImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>ModelProcessor</Processor>

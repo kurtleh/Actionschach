@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/kettenhemdTextur.jpg</SourceFile>
-  <SourceTime>2018-08-27T16:03:50+02:00</SourceTime>
+  <SourceTime>2018-09-09T18:18:49.9531444+02:00</SourceTime>
   <DestFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bin/Windows/kettenhemdTextur.xnb</DestFile>
-  <DestTime>2018-09-03T18:08:44.6234339+02:00</DestTime>
+  <DestTime>2018-09-09T18:53:01.2305947+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -13,6 +13,7 @@ namespace Actionschach {
         Skinmenu,
         WhiteWinner,
         BlackWinner,
+        GrunWinner,
     }
 
     public enum Team
@@ -43,8 +44,12 @@ namespace Actionschach {
         Texture2D skinButton;
         Texture2D menueButton;
         Texture2D resetButton;
+        Texture2D bvr;
+        Texture2D bvg;
+        Texture2D gvr;
         Texture2D blauw;
         Texture2D rotw;
+        Texture2D grunw;
         bool BLOCKIERT=false;
         int d, e;
         float oben = 0, rechts = 0, schwenk = 0;
@@ -87,6 +92,12 @@ namespace Actionschach {
         public Model kingmb;
         public Model queenmb;
         public Model umwelt;
+        public Model bauermg;
+        public Model turmmg;
+        public Model springermg;
+        public Model laufermg;
+        public Model kingmg;
+        public Model queenmg;
 
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(zoom),2
@@ -266,6 +277,10 @@ public bool pressedStartbutton()
             resetButton = Content.Load<Texture2D>("ResetButton");
             rotw = Content.Load<Texture2D>("RotWinner");
             blauw = Content.Load<Texture2D>("BlauWinner");
+            grunw = Content.Load<Texture2D>("GrunWinner");
+            bvr = Content.Load<Texture2D>("BlauvsRot");
+            bvg = Content.Load<Texture2D>("BlauvsGrun");
+            gvr = Content.Load<Texture2D>("GrunvsRot");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             text = Content.Load<SpriteFont>("text");
@@ -285,6 +300,12 @@ public bool pressedStartbutton()
             kingmw = Content.Load<Model>("konigblau");
             kingmb = Content.Load<Model>("konigrot");
             umwelt = Content.Load<Model>("Land");
+            turmmg = Content.Load<Model>("turmgrun");
+            bauermg = Content.Load<Model>("bauergrun");
+            springermg = Content.Load<Model>("springergrun");
+            laufermg = Content.Load<Model>("laufergrun");
+            queenmg = Content.Load<Model>("damegrun");
+            kingmg = Content.Load<Model>("koniggrun");
 
             for (int i = 8; i < 16; i++)
                 figur[i].SetModel(bauermw);
@@ -307,7 +328,81 @@ public bool pressedStartbutton()
             figur[30].SetModel(springermb);
             figur[31].SetModel(turmmb);
             maus = Content.Load<Model>("kugel");
-            zeiger = Content.Load<Texture2D>("Cursor"); }
+            zeiger = Content.Load<Texture2D>("Cursor");
+        }
+
+        public void blauvsrot()
+        {
+            for (int i = 8; i < 16; i++)
+                figur[i].SetModel(bauermw);
+            for (int i = 16; i < 24; i++)
+                figur[i].SetModel(bauermb);
+            figur[0].SetModel(turmmw);
+            figur[1].SetModel(springermw);
+            figur[2].SetModel(laufermw);
+            figur[3].SetModel(queenmw);
+            figur[4].SetModel(kingmw);
+            figur[5].SetModel(laufermw);
+            figur[6].SetModel(springermw);
+            figur[7].SetModel(turmmw);
+            figur[24].SetModel(turmmb);
+            figur[25].SetModel(springermb);
+            figur[26].SetModel(laufermb);
+            figur[27].SetModel(queenmb);
+            figur[28].SetModel(kingmb);
+            figur[29].SetModel(laufermb);
+            figur[30].SetModel(springermb);
+            figur[31].SetModel(turmmb);
+        }
+
+        public void grunvsrot()
+        {
+            for (int i = 8; i < 16; i++)
+                figur[i].SetModel(bauermg);
+            for (int i = 16; i < 24; i++)
+                figur[i].SetModel(bauermb);
+            figur[0].SetModel(turmmg);
+            figur[1].SetModel(springermg);
+            figur[2].SetModel(laufermg);
+            figur[3].SetModel(queenmg);
+            figur[4].SetModel(kingmg);
+            figur[5].SetModel(laufermg);
+            figur[6].SetModel(springermg);
+            figur[7].SetModel(turmmg);
+            figur[24].SetModel(turmmb);
+            figur[25].SetModel(springermb);
+            figur[26].SetModel(laufermb);
+            figur[27].SetModel(queenmb);
+            figur[28].SetModel(kingmb);
+            figur[29].SetModel(laufermb);
+            figur[30].SetModel(springermb);
+            figur[31].SetModel(turmmb);
+        }
+
+        public void blauvsgrun()
+        {
+            for (int i = 8; i < 16; i++)
+                figur[i].SetModel(bauermw);
+            for (int i = 16; i < 24; i++)
+                figur[i].SetModel(bauermg);
+            figur[0].SetModel(turmmw);
+            figur[1].SetModel(springermw);
+            figur[2].SetModel(laufermw);
+            figur[3].SetModel(queenmw);
+            figur[4].SetModel(kingmw);
+            figur[5].SetModel(laufermw);
+            figur[6].SetModel(springermw);
+            figur[7].SetModel(turmmw);
+            figur[24].SetModel(turmmg);
+            figur[25].SetModel(springermg);
+            figur[26].SetModel(laufermg);
+            figur[27].SetModel(queenmg);
+            figur[28].SetModel(kingmg);
+            figur[29].SetModel(laufermg);
+            figur[30].SetModel(springermg);
+            figur[31].SetModel(turmmg);
+        }
+
 
         public bool pressedMenubutton()
         {
@@ -374,6 +469,9 @@ public bool pressedStartbutton()
                     break;
                 case GameState.BlackWinner:
                     UpdateBlackWinner(gameTime);
+                    break;
+                case GameState.GrunWinner:
+                    UpdateGrunWinner(gameTime);
                     break;
             }
             if (state.LeftButton == ButtonState.Pressed)    //für klicks
@@ -614,12 +712,48 @@ public bool pressedStartbutton()
         }
         void UpdateSkinMenu(GameTime deltaTime)
          {
-
-             if (pressedMenubutton())
+            MouseState state = Mouse.GetState();
+            position.X = state.X;
+            position.Y = state.Y;
+            if (pressedMenubutton())
                  _state = GameState.MainMenu;
-         }
+            if (position.X < 587 &&
+        position.X > 437 &&
+        position.Y < 350 &&
+        position.Y > 250 && click())
+            {
+                blauvsgrun();
+                _state = GameState.MainMenu;
+            }
+            if (position.X < 387 &&
+        position.X > 237 &&
+        position.Y < 350 &&
+        position.Y > 250 && click())
+            {
+                blauvsrot();
+                _state = GameState.MainMenu;
+            }
+            if (position.X < 787 &&
+        position.X > 637 &&
+        position.Y < 350 &&
+        position.Y > 250 && click())
+            {
+                grunvsrot();
+                _state = GameState.MainMenu;
+            }
+        }
 
         void UpdateWhiteWinner(GameTime deltaTime)
+        {
+            reset();
+            whiteturn = true;
+            if (pressedWinnerMenuebutton())
+                _state = GameState.MainMenu;
+            if (pressedWinnerResetbutton())
+                _state = GameState.Gameplay;
+        }
+
+        void UpdateGrunWinner(GameTime deltaTime)
         {
             reset();
             whiteturn = true;
@@ -753,6 +887,15 @@ public bool pressedStartbutton()
 
         }
 
+        void DrawGrunWinner(GameTime deltaTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(grunw, destinationRectangle: new Rectangle(350, 100, 300, 200));
+            //spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(181, 380, 150, 100));
+            //spriteBatch.Draw(resetButton, destinationRectangle: new Rectangle(693, 380, 150, 100));
+            spriteBatch.End();
+        }
+
         void DrawWhiteWinner(GameTime deltaTime)
         {
             spriteBatch.Begin();
@@ -835,6 +978,9 @@ public bool pressedStartbutton()
         {
             spriteBatch.Begin();
             spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(437, 50, 150, 100));
+            spriteBatch.Draw(bvr, destinationRectangle: new Rectangle(237, 250, 150, 100));
+            spriteBatch.Draw(bvg, destinationRectangle: new Rectangle(437, 250, 150, 100));
+            spriteBatch.Draw(gvr, destinationRectangle: new Rectangle(637, 250, 150, 100));
             spriteBatch.End();
         }
 
@@ -1208,36 +1354,36 @@ public bool pressedStartbutton()
                     figurm = Matrix.CreateScale(-0.12f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
                     f = Figurentyp.Turm;
                     if (iswhite)
-                        SetModel(g.turmmw);
+                        SetModel(g.figur[0].GetModel());
                     else
-                        SetModel(g.turmmb);
+                        SetModel(g.figur[31].GetModel());
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D2))
                 {
                     figurm = Matrix.CreateScale(-0.11f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
                     f = Figurentyp.Springer;
                     if (iswhite)
-                        SetModel(g.springermw);
+                        SetModel(g.figur[1].GetModel());
                     else
-                        SetModel(g.springermb);
+                        SetModel(g.figur[30].GetModel());
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D3))
                 {
                     figurm = Matrix.CreateScale(-0.18f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
                     f = Figurentyp.Laeufer;
                     if (iswhite)
-                        SetModel(g.laufermw);
+                        SetModel(g.figur[2].GetModel());
                     else
-                        SetModel(g.laufermb);
+                        SetModel(g.figur[29].GetModel());
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D4))
                 {
                     figurm = Matrix.CreateScale(-0.23f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
                     f = Figurentyp.Queen;
                     if (iswhite)
-                        SetModel(g.queenmw);
+                        SetModel(g.figur[3].GetModel());
                     else
-                        SetModel(g.queenmb);
+                        SetModel(g.figur[27].GetModel());
                 }
             }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/rindeTextur.jpg</SourceFile>
-  <SourceTime>2018-09-03T17:49:34.7188977+02:00</SourceTime>
+  <SourceTime>2018-09-09T18:18:52.4433072+02:00</SourceTime>
   <DestFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bin/Windows/rindeTextur.xnb</DestFile>
-  <DestTime>2018-09-03T18:08:49.1313514+02:00</DestTime>
+  <DestTime>2018-09-09T18:53:07.54887+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
