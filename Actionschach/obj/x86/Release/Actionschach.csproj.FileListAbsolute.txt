@@ -134,3 +134,4 @@ C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Act
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.csproj.CopyComplete
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.exe
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.pdb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\obj\x86\Release\Actionschach.csprojAssemblyReference.cache
