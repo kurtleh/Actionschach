@@ -98,6 +98,7 @@ namespace Actionschach {
         public Model laufermg;
         public Model kingmg;
         public Model queenmg;
+        public Model coin;
 
         private Matrix world = Matrix.CreateTranslation(new Vector3(0, 0, 0));
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(zoom),2
@@ -113,6 +114,7 @@ namespace Actionschach {
         Vector2 Maus=new Vector2(0,0);
         private Model maus;    //scale:0,1
         private Matrix[] worldm = new Matrix[64];
+        private Matrix coinm;
 
         //Raster
         public static Vector2 raster(Vector2 tmp){
@@ -181,6 +183,7 @@ namespace Actionschach {
                     k++;
                 }
             }
+            coinm=Matrix.CreateScale(-0.1f)*Matrix.CreateTranslation(raster(new Vector2(3,3)).X, raster(new Vector2(3, 3)).Y, 0.1f);
             //Startaufstellung
             figur[0] = new Schachfigur(0, 0, Figurentyp.Turm, true,-0.12f);
             figur[1] = new Schachfigur(1, 0, Figurentyp.Springer, true,-0.11f);
@@ -285,7 +288,7 @@ public bool pressedStartbutton()
             spriteBatch = new SpriteBatch(GraphicsDevice);
             text = Content.Load<SpriteFont>("text");
             textposition = new Vector2(0, 0);
-
+            coin = Content.Load<Model>("coin");
             brett = Content.Load<Model>("chessboard");
             turmmw = Content.Load<Model>("turmblau");
             turmmb = Content.Load<Model>("turmrot");
@@ -878,6 +881,14 @@ public bool pressedStartbutton()
         {
             graphics.GraphicsDevice.Clear(Color.DeepSkyBlue);
             DrawModel(brett, world, view, projection);
+            if (klick)
+            {
+                for (int i = 0; i < 64; ++i)
+                {
+                    if(figur[itmp].possiblemove(feld(i),this))
+                    DrawModel(coin, worldm[i], view, projection);
+                }
+            }
             DrawModel(umwelt, Matrix.CreateScale(-0.5f)*world, view, projection);
             for (int i = 0; i < 32; i++)
                 figur[i].draw(view, projection);
