@@ -177,3 +177,5 @@ C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Deb
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\BlauvsRot.xnb
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\GrunvsRot.xnb
 C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\GrunWinner.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\WaldButton.xnb
+C:\Users\Kurt\Desktop\Actionschach\Actionschach\Actionschach\bin\Windows\x86\Debug\Content\StadtButton.xnb

@@ -50,6 +50,8 @@ namespace Actionschach {
         Texture2D blauw;
         Texture2D rotw;
         Texture2D grunw;
+        Texture2D waldb;
+        Texture2D stadtb;
         bool BLOCKIERT=false;
         int d, e;
         float oben = 0, rechts = 0, schwenk = 0;
@@ -284,6 +286,8 @@ public bool pressedStartbutton()
             bvr = Content.Load<Texture2D>("BlauvsRot");
             bvg = Content.Load<Texture2D>("BlauvsGrun");
             gvr = Content.Load<Texture2D>("GrunvsRot");
+            stadtb = Content.Load<Texture2D>("StadtButton");
+            waldb = Content.Load<Texture2D>("WaldButton");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             text = Content.Load<SpriteFont>("text");
@@ -643,6 +647,7 @@ public bool pressedStartbutton()
                 for (int i = 0; i <= 63; i++)
                 {
                     worldm[i] = worldm[i] * Matrix.CreateRotationZ((float)Math.PI);
+                    coinm[i]= coinm[i] * Matrix.CreateRotationZ((float)Math.PI);
                 }
                 world = world * Matrix.CreateRotationZ((float)Math.PI);
                 zugErfolgt = false;
@@ -742,6 +747,22 @@ public bool pressedStartbutton()
         position.Y > 250 && click())
             {
                 grunvsrot();
+                _state = GameState.MainMenu;
+            }
+            if (position.X < 387 &&
+        position.X > 237 &&
+        position.Y < 550 &&
+        position.Y > 450 && click())
+            {
+                umwelt = Content.Load<Model>("Land");
+                _state = GameState.MainMenu;
+            }
+            if (position.X < 587 &&
+        position.X > 437 &&
+        position.Y < 550 &&
+        position.Y > 450 && click())
+            {
+                //umwelt = Content.Load<Model>("");
                 _state = GameState.MainMenu;
             }
         }
@@ -885,15 +906,17 @@ public bool pressedStartbutton()
             {
                 for (int i = 0; i < 64; ++i)
                 {
-                    if(figur[itmp].possiblemove(feld(i),this))
-                    DrawModel(figur[itmp].GetModel(), coinm[i], view, projection);
+                    if (figur[itmp].possiblemove(feld(i), this))
+                    {
+                        DrawModel(figur[itmp].GetModel(), coinm[i], view, projection);
+                    }
                 }
             }
             DrawModel(umwelt, Matrix.CreateScale(-0.5f)*world, view, projection);
             for (int i = 0; i < 32; i++)
                 figur[i].draw(view, projection);
             spriteBatch.Begin();
-            spriteBatch.DrawString(text, Ausgabe, textposition, Color.Black);
+            spriteBatch.DrawString(text, Ausgabe, textposition, Color.Red);
             spriteBatch.End();
 
         }
@@ -992,6 +1015,8 @@ public bool pressedStartbutton()
             spriteBatch.Draw(bvr, destinationRectangle: new Rectangle(237, 250, 150, 100));
             spriteBatch.Draw(bvg, destinationRectangle: new Rectangle(437, 250, 150, 100));
             spriteBatch.Draw(gvr, destinationRectangle: new Rectangle(637, 250, 150, 100));
+            spriteBatch.Draw(waldb, destinationRectangle: new Rectangle(237, 450, 150, 100));
+            spriteBatch.Draw(stadtb, destinationRectangle: new Rectangle(437, 450, 150, 100));
             spriteBatch.End();
         }
 
