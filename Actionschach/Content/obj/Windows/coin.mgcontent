@@ -3,7 +3,7 @@
   <SourceFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/coin.fbx</SourceFile>
   <SourceTime>2018-07-06T11:21:00+02:00</SourceTime>
   <DestFile>C:/Users/Kurt/Desktop/Actionschach/Actionschach/Actionschach/Content/bin/Windows/coin.xnb</DestFile>
-  <DestTime>2018-09-16T16:42:05.6376864+02:00</DestTime>
+  <DestTime>2018-09-16T20:43:18.32801+02:00</DestTime>
   <Importer>FbxImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>ModelProcessor</Processor>
@@ -54,7 +54,7 @@
   </Parameters>
   <Parameters>
     <Key>Scale</Key>
-    <Value>0.1</Value>
+    <Value>1</Value>
   </Parameters>
   <Parameters>
     <Key>SwapWindingOrder</Key>

@@ -114,7 +114,7 @@ namespace Actionschach {
         Vector2 Maus=new Vector2(0,0);
         private Model maus;    //scale:0,1
         private Matrix[] worldm = new Matrix[64];
-        private Matrix coinm;
+        private Matrix[] coinm=new Matrix[64];
 
         //Raster
         public static Vector2 raster(Vector2 tmp){
@@ -180,10 +180,10 @@ namespace Actionschach {
             for (int i = 0; i < 8; i++){
                 for (int j = 0; j < 8; j++){
                     worldm[k] = Matrix.CreateScale(-0.9f) * Matrix.CreateTranslation(raster(new Vector2(j,i)).X,raster(new Vector2(j,i)).Y, 0);
+                    coinm[k] = Matrix.CreateScale(-0.1f) * Matrix.CreateTranslation(raster(new Vector2(j, i)).X, raster(new Vector2(j, i)).Y, 0.01f);
                     k++;
                 }
             }
-            coinm=Matrix.CreateScale(-0.1f)*Matrix.CreateTranslation(raster(new Vector2(3,3)).X, raster(new Vector2(3, 3)).Y, 0.1f);
             //Startaufstellung
             figur[0] = new Schachfigur(0, 0, Figurentyp.Turm, true,-0.12f);
             figur[1] = new Schachfigur(1, 0, Figurentyp.Springer, true,-0.11f);
@@ -886,7 +886,7 @@ public bool pressedStartbutton()
                 for (int i = 0; i < 64; ++i)
                 {
                     if(figur[itmp].possiblemove(feld(i),this))
-                    DrawModel(coin, worldm[i], view, projection);
+                    DrawModel(figur[itmp].GetModel(), coinm[i], view, projection);
                 }
             }
             DrawModel(umwelt, Matrix.CreateScale(-0.5f)*world, view, projection);
