@@ -14,6 +14,7 @@ namespace Actionschach {
         WhiteWinner,
         BlackWinner,
         GrunWinner,
+        Anleitung,
     }
 
     public enum Team
@@ -52,6 +53,8 @@ namespace Actionschach {
         Texture2D grunw;
         Texture2D waldb;
         Texture2D stadtb;
+        Texture2D anleitung;
+        Texture2D anleitungbutton;
         bool BLOCKIERT=false;
         int d, e;
         float oben = 0, rechts = 0, schwenk = 0;
@@ -219,7 +222,7 @@ namespace Actionschach {
             position.Y = state.Y;
             if (position.X < 587 &&
         position.X > 437 &&
-        position.Y < 350 &&
+        position.Y < 300 &&
         position.Y > 200 && click())
             {
                 return true;
@@ -227,8 +230,22 @@ namespace Actionschach {
             return false; ;
         }
 
+        public bool pressedAnleitungbutton()
+        {
+            MouseState state = Mouse.GetState();
+            position.X = state.X;
+            position.Y = state.Y;
+            if (position.X < 587 &&
+        position.X > 437 &&
+        position.Y < 450 &&
+        position.Y > 350 && click())
+            {
+                return true;
+            }
+            return false; ;
+        }
 
-public bool pressedStartbutton()
+        public bool pressedStartbutton()
         {
             MouseState state = Mouse.GetState();
             position.X = state.X;
@@ -288,6 +305,8 @@ public bool pressedStartbutton()
             gvr = Content.Load<Texture2D>("GrunvsRot");
             stadtb = Content.Load<Texture2D>("StadtButton");
             waldb = Content.Load<Texture2D>("WaldButton");
+            anleitung = Content.Load<Texture2D>("Anleitung");
+            anleitungbutton= Content.Load<Texture2D>("AnleitungButton");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             text = Content.Load<SpriteFont>("text");
@@ -440,6 +459,14 @@ public bool pressedStartbutton()
                 _state = GameState.Skinmenu;
             if (pressedStartbutton())
                 _state = GameState.Gameplay;
+            if (pressedAnleitungbutton())
+                _state = GameState.Anleitung;
+        }
+
+        void UpdateAnleitung(GameTime deltaTime)
+        {
+            if (pressedMenubutton())
+                _state = GameState.MainMenu;
         }
 
         protected override void Update(GameTime gameTime) {
@@ -479,6 +506,9 @@ public bool pressedStartbutton()
                     break;
                 case GameState.GrunWinner:
                     UpdateGrunWinner(gameTime);
+                    break;
+                case GameState.Anleitung:
+                    UpdateAnleitung(gameTime);
                     break;
             }
             if (state.LeftButton == ButtonState.Pressed)    //für klicks
@@ -883,9 +913,20 @@ public bool pressedStartbutton()
                 case GameState.WhiteWinner:
                     DrawWhiteWinner(gameTime);
                     break;
+                case GameState.Anleitung:
+                    DrawAnleitung(gameTime);
+                    break;
             }
             spriteBatch.Begin();
             spriteBatch.Draw(zeiger, position, origin: new Vector2(0, 0));
+            spriteBatch.End();
+        }
+
+        void DrawAnleitung(GameTime deltaTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(menueButton, destinationRectangle: new Rectangle(437, 50, 150, 100));
+            spriteBatch.Draw(anleitung, destinationRectangle: new Rectangle(200, 200, 800, 500));
             spriteBatch.End();
         }
 
@@ -894,6 +935,7 @@ public bool pressedStartbutton()
             spriteBatch.Begin();
             spriteBatch.Draw(startButton, destinationRectangle: new Rectangle(437, 50, 150, 100));
             spriteBatch.Draw(skinButton, destinationRectangle: new Rectangle(437, 200, 150, 100));
+            spriteBatch.Draw(anleitungbutton, destinationRectangle: new Rectangle(437, 350, 150, 100));
             spriteBatch.End();
 
         }
