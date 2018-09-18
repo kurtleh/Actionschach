@@ -1271,7 +1271,7 @@ namespace Actionschach {
                         }
                         return false;
                     case Figurentyp.Springer:
-                        if(Math.Abs(Math.Abs(position.X-test.X)-Math.Abs(position.Y-test.Y))==1 && Math.Abs(position.X-test.X)<3 && Math.Abs(position.Y - test.Y) < 3)
+                        if(Math.Abs(Math.Abs(position.X-test.X)-Math.Abs(position.Y-test.Y))==1 && Math.Abs(position.X-test.X)<3 && Math.Abs(position.Y - test.Y) < 3&&position.X-test.X!=0&&position.Y-test.Y!=0)
                         {
                             if (fi < 0)
                                 return true;
