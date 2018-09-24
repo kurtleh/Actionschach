@@ -682,7 +682,7 @@ namespace Actionschach {
                 world = world * Matrix.CreateRotationZ((float)Math.PI);
                 zugErfolgt = false;
             }
-
+            Ausgabe = "";
             for (int i = 8; i < 16; i++)
             {
                 if (figur[i].position.Y == 7)
@@ -698,7 +698,7 @@ namespace Actionschach {
                 figur[i].update(deltaTime, this);
             }
 
-            Ausgabe = "";
+            
             for(int i=0;i<16; ++i)
             {
                 if (figur[i].possiblemove(figur[28].position, this))
@@ -1426,42 +1426,45 @@ namespace Actionschach {
 
             public void bauerntausch(Game1 g)
             {
-                g.Ausgabe += "Ein Bauer hat die hintere Linie erreicht,\nwelche Form soll er annehmen?\nTurm(1),Springer(2),Lauufer(3),Dame(4)\n";
-                if (Keyboard.GetState().IsKeyDown(Keys.D1))
+                if (f == Figurentyp.Bauer)
                 {
-                    figurm = Matrix.CreateScale(-0.12f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
-                    f = Figurentyp.Turm;
-                    if (iswhite)
-                        SetModel(g.figur[0].GetModel());
-                    else
-                        SetModel(g.figur[31].GetModel());
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.D2))
-                {
-                    figurm = Matrix.CreateScale(-0.11f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
-                    f = Figurentyp.Springer;
-                    if (iswhite)
-                        SetModel(g.figur[1].GetModel());
-                    else
-                        SetModel(g.figur[30].GetModel());
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.D3))
-                {
-                    figurm = Matrix.CreateScale(-0.18f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
-                    f = Figurentyp.Laeufer;
-                    if (iswhite)
-                        SetModel(g.figur[2].GetModel());
-                    else
-                        SetModel(g.figur[29].GetModel());
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.D4))
-                {
-                    figurm = Matrix.CreateScale(-0.23f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
-                    f = Figurentyp.Queen;
-                    if (iswhite)
-                        SetModel(g.figur[3].GetModel());
-                    else
-                        SetModel(g.figur[27].GetModel());
+                    g.Ausgabe += "Ein Bauer hat die hintere Linie erreicht,\nwelche Form soll er annehmen?\nTurm(1),Springer(2),Lauufer(3),Dame(4)\n";
+                    if (Keyboard.GetState().IsKeyDown(Keys.D1))
+                    {
+                        figurm = Matrix.CreateScale(-0.12f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                        f = Figurentyp.Turm;
+                        if (iswhite)
+                            SetModel(g.figur[0].GetModel());
+                        else
+                            SetModel(g.figur[31].GetModel());
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.D2))
+                    {
+                        figurm = Matrix.CreateScale(-0.11f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                        f = Figurentyp.Springer;
+                        if (iswhite)
+                            SetModel(g.figur[1].GetModel());
+                        else
+                            SetModel(g.figur[30].GetModel());
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.D3))
+                    {
+                        figurm = Matrix.CreateScale(-0.18f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                        f = Figurentyp.Laeufer;
+                        if (iswhite)
+                            SetModel(g.figur[2].GetModel());
+                        else
+                            SetModel(g.figur[29].GetModel());
+                    }
+                    if (Keyboard.GetState().IsKeyDown(Keys.D4))
+                    {
+                        figurm = Matrix.CreateScale(-0.23f) * Matrix.CreateTranslation(new Vector3(figurm.M41 + a, figurm.M42 + b, 0));
+                        f = Figurentyp.Queen;
+                        if (iswhite)
+                            SetModel(g.figur[3].GetModel());
+                        else
+                            SetModel(g.figur[27].GetModel());
+                    }
                 }
             }
 
